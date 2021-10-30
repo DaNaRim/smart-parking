@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>form</title>
+</head>
+<body>
+<form id="registration-form">
+
+    <h1>Registration</h1>
+    <br>
+    <label>
+        firstName
+        <input name="firstName" required type="text">
+    </label>
+    <br>
+    <label>
+        lastName
+        <input name="lastName" required type="text">
+    </label>
+    <br>
+    <label>
+        email
+        <input name="email" required type="text">
+    </label>
+    <br>
+    <label>
+        password
+        <input name="password" required type="password">
+    </label>
+    <br>
+    <label>
+        matchingPassword
+        <input name="matchingPassword" required type="password">
+    </label>
+    <br>
+    <button type="submit">Register</button>
+</form>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/3.1.1/jquery.serializejson.min.js"></script>
+<script>
+    const home = "http://localhost:8080/";
+
+    $("#registration-form").submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: home + "registerUser",
+            data: JSON.stringify($("#registration-form").serializeJSON()),
+            dataType: 'json',
+            success: function () {
+                alert('Success');
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+</script>
+</body>
+</html>
