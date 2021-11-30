@@ -40,7 +40,7 @@ public class MailUtil {
                                             String token,
                                             String userEmail) {
 
-        String url = String.format("%s/updateForgottenPassword?token=%s", contextPath, token);
+        String url = String.format("%s/resetPasswordPage?token=%s", contextPath, token);
         String message = messages.getMessage("message.email.btn.resetPassword", null, locale);
         mailSender.send(constructEmail("Reset Password", message + "\r\n" + url, userEmail));
     }

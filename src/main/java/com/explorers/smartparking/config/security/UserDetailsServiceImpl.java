@@ -1,7 +1,7 @@
 package com.explorers.smartparking.config.security;
 
-import com.explorers.smartparking.registration.persistence.dao.UserDao;
-import com.explorers.smartparking.registration.persistence.model.User;
+import com.explorers.smartparking.user.persistence.dao.UserDao;
+import com.explorers.smartparking.user.persistence.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailAuthenticationException;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,8 +37,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({InvalidTokenException.class})
-    public ResponseEntity<Object> handleToken(RuntimeException e, WebRequest request) {
+    public ResponseEntity<Object> handleToken(RuntimeException e, Model model, WebRequest request) {
         logger.warn("HTTP 400: InvalidToken " + e.getMessage());
+
+//        model.addAttribute() //TODO return bad token page
+//        return "redirect:/badToken";
 
         GenericResponse responseBody = new GenericResponse(
                 messages.getMessage("error.token." + e.getMessage(), null, request.getLocale()), "InvalidToken");

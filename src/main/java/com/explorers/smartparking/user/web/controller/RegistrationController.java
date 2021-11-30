@@ -66,7 +66,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/resendRegistrationToken")
-    public String resendRegistrationToken(@RequestParam("email") String userEmail,
+    public String resendRegistrationToken(@RequestParam("email") String userEmail, //TODO
                                           HttpServletRequest request,
                                           Locale locale,
                                           Model model) {
@@ -77,7 +77,7 @@ public class RegistrationController {
         return "redirect:/login?lang=" + locale.getLanguage();
     }
 
-    @PostMapping("/resetPassword")
+    @PostMapping("/sendPassResetToken")
     public @ResponseBody
     GenericResponse resetPassword(@RequestParam("email") String userEmail,
                                   HttpServletRequest request) {
@@ -87,23 +87,24 @@ public class RegistrationController {
                 messages.getMessage("message.resetPassEmailSent", null, request.getLocale()));
     }
 
-    @GetMapping("/user/changePassword")
-    public String showChangePasswordPage(@RequestParam("token") String token, //TODO move to UserController
-                                         Locale locale,
-                                         Model model) {
+    @GetMapping("/resetPasswordPage")
+    public String showResetPasswordPage(@RequestParam("token") String token,
+                                        Locale locale,
+                                        Model model) {
 
         tokenService.validatePasswordResetToken(token);
         model.addAttribute("token", token);
-        return "redirect:/forgotPassword?lang=" + locale.getLanguage();
+        return "redirect:/updateFogotPassword?lang=" + locale.getLanguage();
     }
 
     @PutMapping("/updateForgottenPassword")
-    public @ResponseBody
-    GenericResponse updateForgottenPassword(@RequestBody @Valid ForgotPasswordDto passwordDto,
-                                            Locale locale) {
+    public String updateForgottenPassword(@RequestBody @Valid ForgotPasswordDto passwordDto, //FIXME
+                                          Model model,
+                                          Locale locale) {
 
         userService.changeForgottenPassword(passwordDto);
-        return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
+        model.addAttribute("message", messages.getMessage("message.updatePasswordSuc", null, locale));
+        return "login";
     }
 
     @PutMapping("/user/updatePassword")

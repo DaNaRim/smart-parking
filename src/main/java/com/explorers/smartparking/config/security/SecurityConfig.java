@@ -36,10 +36,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/",
                         "/registration",
+                        "/login",
                         "/registerUser",
                         "/registrationConfirm",
-                        "/park/**",
-                        "/login").permitAll()
+                        "/resendRegistrationToken",
+                        "/sendPassResetToken",
+                        "/resetPasswordPage",
+                        "/resetPassword",
+                        "/updateFogotPassword",
+                        "/resetUserPassword", //TODO rename
+                        "/user/changePassword",
+                        "/updateForgottenPassword",
+                        "/user/updatePassword",
+                        "/parking",
+                        "/park/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
