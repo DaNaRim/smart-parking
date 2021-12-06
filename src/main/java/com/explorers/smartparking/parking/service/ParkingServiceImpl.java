@@ -41,7 +41,7 @@ public class ParkingServiceImpl implements ParkingService {
 
             List<FreeParkPlaceResponse> parkingPlaces = new ArrayList<>();
             for (ParkingPlace pp : parking.getParkingPlaces()) {
-                parkingPlaces.add(new FreeParkPlaceResponse(pp.getNumber(), pp.isBusy()));
+                parkingPlaces.add(new FreeParkPlaceResponse(pp.getNumber(), pp.isBusy(), pp.isBooked()));
             }
             result.add(new FreeParkResponse(
                     parking.getId(),
@@ -68,6 +68,8 @@ public class ParkingServiceImpl implements ParkingService {
         }
         pp.setBusy(true);
         pp.setDateOccupied(new Date());
+        pp.setBooked(false); //TODO money paid
+        pp.setDateBooked(null);
         return pp;
     }
 
@@ -78,9 +80,23 @@ public class ParkingServiceImpl implements ParkingService {
         if (pp == null) {
             throw new ParkingPlaceNotFoundException("Wrong parking number");
         }
-        pp.setBusy(false);
+        pp.setBusy(false); //TODO money paid
         pp.setDateOccupied(null);
         return pp;
+    }
+
+    @Override
+    public void bookPlace(Long parkingId, Long placeNumber) {
+        ParkingPlace pp = parkingPlaceDao.findByParkingAndNumber(parkingId, placeNumber);
+
+        if (pp == null) {
+            throw new ParkingPlaceNotFoundException("Wrong parking number");
+
+        } else if (pp.getDateBooked() != null || pp.getDateOccupied() != null) {
+            throw new ParkingPlaceBusyException("Parking place already booked");
+        }
+        pp.setBooked(true);
+        pp.setDateBooked(new Date());
     }
 
     @Override

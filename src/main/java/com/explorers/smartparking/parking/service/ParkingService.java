@@ -15,5 +15,7 @@ public interface ParkingService {
 
     ParkingPlace makeRoom(Long parkingId, Long placeNumber);
 
+    void bookPlace(Long parkingId, Long placeNumber);
+
     Parking addParking(ParkingDto parkingDto);
 }
