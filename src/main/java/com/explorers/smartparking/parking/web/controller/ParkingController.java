@@ -1,14 +1,11 @@
 package com.explorers.smartparking.parking.web.controller;
 
-import com.explorers.smartparking.parking.persistence.model.Parking;
 import com.explorers.smartparking.parking.persistence.model.ParkingPlace;
 import com.explorers.smartparking.parking.service.ParkingService;
-import com.explorers.smartparking.parking.web.dto.ParkingDto;
 import com.explorers.smartparking.parking.web.responceEntity.FreeParkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,11 +37,4 @@ public class ParkingController {
                                  @RequestParam Long placeNumber) {
         return parkingService.makeRoom(parkingId, placeNumber);
     }
-
-    @PostMapping("/addPark")
-
-    public Parking addParking(@Valid @RequestBody ParkingDto parkingDto) {
-        return parkingService.addParking(parkingDto);
-    }
-
 }

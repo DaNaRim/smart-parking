@@ -1,5 +1,6 @@
 package com.explorers.smartparking.config.security;
 
+import com.explorers.smartparking.user.persistence.model.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,21 +36,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers("/",
-                        "/registration",
                         "/login",
+                        "/registration",
                         "/registerUser",
                         "/registrationConfirm",
                         "/resendRegistrationToken",
+                        "/resetPassword",
                         "/sendPassResetToken",
                         "/resetPasswordPage",
-                        "/resetPassword",
-                        "/updateFogotPassword",
-                        "/resetUserPassword", //TODO rename
-                        "/user/changePassword",
-                        "/updateForgottenPassword",
-                        "/user/updatePassword",
+                        "/updateForgottenPassword").permitAll()
+                .mvcMatchers("/user/**",
                         "/parking",
-                        "/park/**").permitAll()
+                        "/park/**").hasRole(RoleName.USER.name())
+                .mvcMatchers("/parkAdmin/**").hasRole(RoleName.ADMIN.name())
+                .mvcMatchers("/superAdmin/**").hasRole(RoleName.SUPER_ADMIN.name())
                 .anyRequest().authenticated()
 
                 .and()
