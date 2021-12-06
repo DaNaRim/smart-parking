@@ -11,12 +11,6 @@ public interface RegistrationService {
 
     void enableUser(String token);
 
-    User findById(long id);
-
-    User findByEmail(String email);
-
     void changeForgottenPassword(ForgotPasswordDto passwordDto);
-
-    void changeUserPassword(long userId, UpdatePasswordDto passwordDto);
 
 }

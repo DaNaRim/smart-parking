@@ -10,14 +10,12 @@ import com.explorers.smartparking.user.web.dto.RegistrationDto;
 import com.explorers.smartparking.user.web.dto.UpdatePasswordDto;
 import com.explorers.smartparking.user.web.error.InvalidOldPasswordException;
 import com.explorers.smartparking.user.web.error.UserAlreadyExistException;
-import com.explorers.smartparking.user.web.error.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -58,30 +56,6 @@ public class RegistrationServiceImpl implements RegistrationService {
         Token verificationToken = tokenService.validateVerificationToken(token);
         User user = verificationToken.getUser();
         user.setEnabled(true);
-    }
-
-    @Override
-    public User findById(long id) {
-        Optional<User> user = userDao.findById(id); //TODO move to UserService
-
-        if (user.isEmpty()) {
-            throw new UserNotFoundException("No user with id: " + id);
-        }
-        return user.get();
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userDao.findByEmail(email);
-    }
-
-    @Override
-    public void changeUserPassword(long userId, UpdatePasswordDto passwordDto) {
-        if (!passwordEncoder.matches(passwordDto.getOldPassword(), userDao.getPasswordById(userId))) {
-            throw new InvalidOldPasswordException("Invalid old password");
-        }
-        User user = userDao.getById(userId);
-        user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.explorers.smartparking.user.web.controller;
 
-import com.explorers.smartparking.user.service.RegistrationService;
 import com.explorers.smartparking.user.service.UserService;
 import com.explorers.smartparking.user.web.dto.UpdatePasswordDto;
 import com.explorers.smartparking.user.web.util.AuthorizationUtil;
@@ -17,13 +16,11 @@ import java.util.Locale;
 @RequestMapping("/user")
 public class UserController {
 
-    private final RegistrationService registrationService;
     private final UserService userService;
     private final MessageSource messages;
 
     @Autowired
-    public UserController(RegistrationService registrationService, UserService userService, MessageSource messages) {
-        this.registrationService = registrationService;
+    public UserController(UserService userService, MessageSource messages) {
         this.userService = userService;
         this.messages = messages;
     }
@@ -33,7 +30,7 @@ public class UserController {
     GenericResponse updatePassword(@RequestBody @Valid UpdatePasswordDto updatePasswordDto,
                                    Locale locale) {
 
-        registrationService.changeUserPassword(AuthorizationUtil.getUserId(), updatePasswordDto);
+        userService.changeUserPassword(AuthorizationUtil.getUserId(), updatePasswordDto);
         return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
     }
 
