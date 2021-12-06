@@ -7,8 +7,6 @@ import com.explorers.smartparking.user.service.UserService;
 import com.explorers.smartparking.user.service.event.OnRegistrationCompleteEvent;
 import com.explorers.smartparking.user.web.dto.ForgotPasswordDto;
 import com.explorers.smartparking.user.web.dto.RegistrationDto;
-import com.explorers.smartparking.user.web.dto.UpdatePasswordDto;
-import com.explorers.smartparking.user.web.util.AuthorizationUtil;
 import com.explorers.smartparking.user.web.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -66,7 +64,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/resendRegistrationToken")
-    public String resendRegistrationToken(@RequestParam("email") String userEmail, //TODO
+    public String resendRegistrationToken(@RequestParam("email") String userEmail,
                                           HttpServletRequest request,
                                           Locale locale,
                                           Model model) {
@@ -106,14 +104,4 @@ public class RegistrationController {
         model.addAttribute("message", messages.getMessage("message.updatePasswordSuc", null, locale));
         return "login";
     }
-
-    @PutMapping("/user/updatePassword")
-    public @ResponseBody
-    GenericResponse updatePassword(@RequestBody @Valid UpdatePasswordDto updatePasswordDto, //TODO move to UserController
-                                   Locale locale) {
-
-        userService.changeUserPassword(AuthorizationUtil.getUserId(), updatePasswordDto);
-        return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
-    }
-
 }
