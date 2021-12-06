@@ -3,7 +3,7 @@ package com.explorers.smartparking.user.web.controller;
 import com.explorers.smartparking.user.persistence.model.User;
 import com.explorers.smartparking.user.service.TokenEmailFacade;
 import com.explorers.smartparking.user.service.TokenService;
-import com.explorers.smartparking.user.service.UserService;
+import com.explorers.smartparking.user.service.RegistrationService;
 import com.explorers.smartparking.user.service.event.OnRegistrationCompleteEvent;
 import com.explorers.smartparking.user.web.dto.ForgotPasswordDto;
 import com.explorers.smartparking.user.web.dto.RegistrationDto;
@@ -23,19 +23,19 @@ import java.util.Locale;
 @Controller
 public class RegistrationController {
 
-    private final UserService userService;
+    private final RegistrationService registrationService;
     private final TokenService tokenService;
     private final TokenEmailFacade tokenEmailFacade;
     private final ApplicationEventPublisher eventPublisher;
     private final MessageSource messages;
 
     @Autowired
-    public RegistrationController(UserService userService,
+    public RegistrationController(RegistrationService registrationService,
                                   TokenService tokenService,
                                   TokenEmailFacade tokenEmailFacade,
                                   ApplicationEventPublisher eventPublisher,
                                   MessageSource messages) {
-        this.userService = userService;
+        this.registrationService = registrationService;
         this.tokenService = tokenService;
         this.tokenEmailFacade = tokenEmailFacade;
         this.eventPublisher = eventPublisher;
@@ -48,7 +48,7 @@ public class RegistrationController {
     GenericResponse registerUserAccount(@RequestBody @Valid RegistrationDto registrationDto,
                                         HttpServletRequest request) {
 
-        User user = userService.registerNewUserAccount(registrationDto);
+        User user = registrationService.registerNewUserAccount(registrationDto);
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request));
         return new GenericResponse(messages.getMessage("message.accountRegistered", null, request.getLocale()));
     }
@@ -58,7 +58,7 @@ public class RegistrationController {
                                       Locale locale,
                                       Model model) {
 
-        userService.enableUser(token);
+        registrationService.enableUser(token);
         model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
         return "redirect:/login?lang=" + locale.getLanguage();
     }
@@ -100,7 +100,7 @@ public class RegistrationController {
                                           Model model,
                                           Locale locale) {
 
-        userService.changeForgottenPassword(passwordDto);
+        registrationService.changeForgottenPassword(passwordDto);
         model.addAttribute("message", messages.getMessage("message.updatePasswordSuc", null, locale));
         return "login";
     }

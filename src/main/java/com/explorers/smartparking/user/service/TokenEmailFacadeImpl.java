@@ -14,15 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 @Transactional
 public class TokenEmailFacadeImpl implements TokenEmailFacade {
 
-    private final UserService userService;
+    private final RegistrationService registrationService;
     private final TokenService tokenService;
     private final MailUtil mailUtil;
 
     @Autowired
-    public TokenEmailFacadeImpl(UserService userService,
+    public TokenEmailFacadeImpl(RegistrationService registrationService,
                                 TokenService tokenService,
                                 MailUtil mailUtil) {
-        this.userService = userService;
+        this.registrationService = registrationService;
         this.tokenService = tokenService;
         this.mailUtil = mailUtil;
     }
@@ -40,7 +40,7 @@ public class TokenEmailFacadeImpl implements TokenEmailFacade {
 
     @Override
     public void updateAndSendVerificationToken(String userEmail, HttpServletRequest request) {
-        User user = userService.findByEmail(userEmail);
+        User user = registrationService.findByEmail(userEmail);
 
         if (user.isEnabled()) {
             throw new InvalidTokenException("userAlreadyEnable");
@@ -56,7 +56,7 @@ public class TokenEmailFacadeImpl implements TokenEmailFacade {
 
     @Override
     public void createAndSendPasswordResetToken(String userEmail, HttpServletRequest request) {
-        User user = userService.findByEmail(userEmail);
+        User user = registrationService.findByEmail(userEmail);
         Token token = tokenService.createPasswordResetToken(user);
 
         mailUtil.sendResetPasswordTokenEmail(
