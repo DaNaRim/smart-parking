@@ -37,7 +37,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public List<FreeParkResponse> getNearestFreeParkingSpaces(Long x, Long y) { //TODO change logic
+    public List<FreeParkResponse> getNearestFreeParkingSpaces(Long x, Long y) {
         List<Parking> parkingList = parkingDao.getFreeParkingPlaces(x, y);
 
         List<FreeParkResponse> result = new ArrayList<>();
