@@ -57,7 +57,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ParkingPlace occupyPlace(Long parkingId, Long placeNumber) {
+    public void occupyPlace(Long parkingId, Long placeNumber) {
         ParkingPlace pp = parkingPlaceDao.findByParkingAndNumber(parkingId, placeNumber);
 
         if (pp == null) {
@@ -70,11 +70,10 @@ public class ParkingServiceImpl implements ParkingService {
         pp.setDateOccupied(new Date());
         pp.setBooked(false); //TODO money paid
         pp.setDateBooked(null);
-        return pp;
     }
 
     @Override
-    public ParkingPlace makeRoom(Long parkingId, Long placeNumber) {
+    public void makeRoom(Long parkingId, Long placeNumber) {
         ParkingPlace pp = parkingPlaceDao.findByParkingAndNumber(parkingId, placeNumber);
 
         if (pp == null) {
@@ -82,7 +81,6 @@ public class ParkingServiceImpl implements ParkingService {
         }
         pp.setBusy(false); //TODO money paid
         pp.setDateOccupied(null);
-        return pp;
     }
 
     @Override

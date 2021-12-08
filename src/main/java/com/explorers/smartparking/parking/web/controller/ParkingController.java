@@ -1,6 +1,5 @@
 package com.explorers.smartparking.parking.web.controller;
 
-import com.explorers.smartparking.parking.persistence.model.ParkingPlace;
 import com.explorers.smartparking.parking.service.ParkingService;
 import com.explorers.smartparking.parking.web.responceEntity.FreeParkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +27,19 @@ public class ParkingController {
     }
 
     @PutMapping("/occupyPlace")
-    public ParkingPlace occupyPlace(@RequestParam Long parkingId,
-                                    @RequestParam Long placeNumber) {
-        return parkingService.occupyPlace(parkingId, placeNumber);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void occupyPlace(@RequestParam Long parkingId,
+                            @RequestParam Long placeNumber) {
+
+        parkingService.occupyPlace(parkingId, placeNumber);
     }
 
     @PutMapping("/makeRoom")
-    public ParkingPlace makeRoom(@RequestParam Long parkingId,
-                                 @RequestParam Long placeNumber) {
-        return parkingService.makeRoom(parkingId, placeNumber);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void makeRoom(@RequestParam Long parkingId,
+                         @RequestParam Long placeNumber) {
+
+        parkingService.makeRoom(parkingId, placeNumber);
     }
 
     @PutMapping("/bookPlace")
