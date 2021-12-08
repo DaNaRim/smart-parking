@@ -1,5 +1,6 @@
 package com.explorers.smartparking.parking.service;
 
+import com.explorers.smartparking.parking.exception.NoEnoughMoneyException;
 import com.explorers.smartparking.parking.exception.ParkingExistsException;
 import com.explorers.smartparking.parking.exception.ParkingPlaceBusyException;
 import com.explorers.smartparking.parking.exception.ParkingPlaceNotFoundException;
@@ -10,6 +11,8 @@ import com.explorers.smartparking.parking.persistence.model.ParkingPlace;
 import com.explorers.smartparking.parking.web.dto.ParkingDto;
 import com.explorers.smartparking.parking.web.responceEntity.FreeParkPlaceResponse;
 import com.explorers.smartparking.parking.web.responceEntity.FreeParkResponse;
+import com.explorers.smartparking.user.persistence.model.User;
+import com.explorers.smartparking.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,15 +27,17 @@ public class ParkingServiceImpl implements ParkingService {
 
     private final ParkingDao parkingDao;
     private final ParkingPlaceDao parkingPlaceDao;
+    private final UserService userService;
 
     @Autowired
-    public ParkingServiceImpl(ParkingDao parkingDao, ParkingPlaceDao parkingPlaceDao) {
+    public ParkingServiceImpl(ParkingDao parkingDao, ParkingPlaceDao parkingPlaceDao, UserService userService) {
         this.parkingDao = parkingDao;
         this.parkingPlaceDao = parkingPlaceDao;
+        this.userService = userService;
     }
 
     @Override
-    public List<FreeParkResponse> getNearestFreeParkingSpaces(Long x, Long y) {
+    public List<FreeParkResponse> getNearestFreeParkingSpaces(Long x, Long y) { //TODO change logic
         List<Parking> parkingList = parkingDao.getFreeParkingPlaces(x, y);
 
         List<FreeParkResponse> result = new ArrayList<>();
@@ -57,44 +62,59 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public void occupyPlace(Long parkingId, Long placeNumber) {
-        ParkingPlace pp = parkingPlaceDao.findByParkingAndNumber(parkingId, placeNumber);
+    public double occupyPlace(Long parkingId, Long placeNumber, String userEmail) {
+        ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
+        User user = userService.findByEmail(userEmail);
 
-        if (pp == null) {
-            throw new ParkingPlaceNotFoundException("Wrong parking number");
-
-        } else if (pp.getDateOccupied() != null) {
+        if (pp.isBusy()) {
             throw new ParkingPlaceBusyException("Parking place already busy");
+
+        } else if (pp.isBooked() && !pp.getUserOccupied().equals(user)) {
+            throw new ParkingPlaceBusyException("Parking place booked by another user");
+
+        } else if (user.getBalance() <= 0) {
+            throw new NoEnoughMoneyException("No enough money on your balance: " + user.getBalance());
+
+        } else if (pp.isBooked()) {
+            double moneyToPay = pp.getParking().getPricePerHour() * getOccupiedHours(pp.getDateBooked());
+            moneyToPay = Math.round(moneyToPay * 100.0) / 100.0;
+
+            user.setBalance(user.getBalance() - moneyToPay);
         }
-        pp.setBusy(true);
         pp.setDateOccupied(new Date());
-        pp.setBooked(false); //TODO money paid
         pp.setDateBooked(null);
+        pp.setUserOccupied(user);
+        return user.getBalance();
     }
 
     @Override
-    public void makeRoom(Long parkingId, Long placeNumber) {
-        ParkingPlace pp = parkingPlaceDao.findByParkingAndNumber(parkingId, placeNumber);
+    public double makeRoom(Long parkingId, Long placeNumber) {
+        ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
+        User user = userService.findByEmail(pp.getUserOccupied().getEmail());
 
-        if (pp == null) {
-            throw new ParkingPlaceNotFoundException("Wrong parking number");
-        }
-        pp.setBusy(false); //TODO money paid
+        double moneyToPay = pp.getParking().getPricePerHour() * getOccupiedHours(pp.getDateOccupied());
+        moneyToPay = Math.round(moneyToPay * 100.0) / 100.0;
+
+        user.setBalance(user.getBalance() - moneyToPay);
+
         pp.setDateOccupied(null);
+        pp.setUserOccupied(null);
+        return user.getBalance();
     }
 
     @Override
-    public void bookPlace(Long parkingId, Long placeNumber) {
-        ParkingPlace pp = parkingPlaceDao.findByParkingAndNumber(parkingId, placeNumber);
+    public void bookPlace(Long parkingId, Long placeNumber, String userEmail) {
+        ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
+        User user = userService.findByEmail(userEmail);
 
-        if (pp == null) {
-            throw new ParkingPlaceNotFoundException("Wrong parking number");
+        if (pp.isBooked() || pp.isBusy()) {
+            throw new ParkingPlaceBusyException("Parking place is busy");
 
-        } else if (pp.getDateBooked() != null || pp.getDateOccupied() != null) {
-            throw new ParkingPlaceBusyException("Parking place already booked");
+        } else if (user.getBalance() <= 0) {
+            throw new NoEnoughMoneyException("No enough money on your balance: " + user.getBalance());
         }
-        pp.setBooked(true);
         pp.setDateBooked(new Date());
+        pp.setUserOccupied(user);
     }
 
     @Override
@@ -119,6 +139,20 @@ public class ParkingServiceImpl implements ParkingService {
         }
         parking.setParkingPlaces(parkingPlaces);
         return parking;
+    }
+
+    private ParkingPlace getParkingPlace(long parkingId, long placeNumber) {
+        ParkingPlace pp = parkingPlaceDao.findByParkingAndNumber(parkingId, placeNumber);
+
+        if (pp == null) {
+            throw new ParkingPlaceNotFoundException("Wrong parking number");
+        }
+        return pp;
+    }
+
+    private double getOccupiedHours(Date date) {
+        final int MILLI_TO_HOUR = 1000 * 60 * 60;
+        return (double) (new Date().getTime() - date.getTime()) / MILLI_TO_HOUR;
     }
 
 }

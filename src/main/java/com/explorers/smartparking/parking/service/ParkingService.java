@@ -10,11 +10,17 @@ public interface ParkingService {
 
     List<FreeParkResponse> getNearestFreeParkingSpaces(Long x, Long y);
 
-    void occupyPlace(Long parkingId, Long placeNumber);
+    /**
+     * @return current user balance
+     */
+    double occupyPlace(Long parkingId, Long placeNumber, String userEmail);
 
-    void makeRoom(Long parkingId, Long placeNumber);
+    /**
+     * @return current user balance
+     */
+    double makeRoom(Long parkingId, Long placeNumber);
 
-    void bookPlace(Long parkingId, Long placeNumber);
+    void bookPlace(Long parkingId, Long placeNumber, String userEmail);
 
     Parking addParking(ParkingDto parkingDto);
 }

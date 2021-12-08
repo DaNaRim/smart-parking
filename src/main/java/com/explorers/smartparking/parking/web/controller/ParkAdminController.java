@@ -13,12 +13,12 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/parkAdmin")
-public class ParkingAdminController {
+public class ParkAdminController {
 
     private final ParkingService parkingService;
 
     @Autowired
-    public ParkingAdminController(ParkingService parkingService) {
+    public ParkAdminController(ParkingService parkingService) {
         this.parkingService = parkingService;
     }
 
