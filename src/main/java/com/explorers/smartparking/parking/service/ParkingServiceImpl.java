@@ -1,9 +1,9 @@
 package com.explorers.smartparking.parking.service;
 
-import com.explorers.smartparking.parking.exception.NoEnoughMoneyException;
-import com.explorers.smartparking.parking.exception.ParkingExistsException;
-import com.explorers.smartparking.parking.exception.ParkingPlaceBusyException;
-import com.explorers.smartparking.parking.exception.ParkingPlaceNotFoundException;
+import com.explorers.smartparking.parking.error.NoEnoughMoneyException;
+import com.explorers.smartparking.parking.error.ParkingExistsException;
+import com.explorers.smartparking.parking.error.ParkingPlaceBusyException;
+import com.explorers.smartparking.parking.error.ParkingPlaceNotFoundException;
 import com.explorers.smartparking.parking.persistence.dao.ParkingDao;
 import com.explorers.smartparking.parking.persistence.dao.ParkingPlaceDao;
 import com.explorers.smartparking.parking.persistence.model.Parking;

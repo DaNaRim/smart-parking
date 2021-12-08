@@ -101,7 +101,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleMail(RuntimeException e, WebRequest request) {
         logger.error("HTTP 500: MailAuthenticationException " + e.getMessage());
         GenericResponse responseBody = new GenericResponse(
-                messages.getMessage("error.email.config.error", null, request.getLocale()), "MailError");
+                messages.getMessage("error.email.config", null, request.getLocale()), "MailError");
 
         return handleExceptionInternal(e, responseBody, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

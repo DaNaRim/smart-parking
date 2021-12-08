@@ -31,7 +31,7 @@ public class UserController {
                                    Locale locale) {
 
         userService.changeUserPassword(AuthorizationUtil.getUserId(), updatePasswordDto);
-        return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
+        return new GenericResponse(messages.getMessage("message.user.updatePasswordSuc", null, locale));
     }
 
     @PutMapping("/putMoney")

@@ -50,7 +50,7 @@ public class RegistrationController {
 
         User user = registrationService.registerNewUserAccount(registrationDto);
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request));
-        return new GenericResponse(messages.getMessage("message.accountRegistered", null, request.getLocale()));
+        return new GenericResponse(messages.getMessage("message.user.accountRegistered", null, request.getLocale()));
     }
 
     @GetMapping("/registrationConfirm")
@@ -59,7 +59,7 @@ public class RegistrationController {
                                       Model model) {
 
         registrationService.enableUser(token);
-        model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
+        model.addAttribute("message", messages.getMessage("message.user.accountVerified", null, locale));
         return "redirect:/login?lang=" + locale.getLanguage();
     }
 
@@ -71,7 +71,7 @@ public class RegistrationController {
 
         tokenEmailFacade.updateAndSendVerificationToken(userEmail, request);
 
-        model.addAttribute("message", messages.getMessage("message.tokenResent", null, locale));
+        model.addAttribute("message", messages.getMessage("message.user.tokenResent", null, locale));
         return "redirect:/login?lang=" + locale.getLanguage();
     }
 
@@ -82,7 +82,7 @@ public class RegistrationController {
 
         tokenEmailFacade.createAndSendPasswordResetToken(userEmail, request);
         return new GenericResponse(
-                messages.getMessage("message.resetPassEmailSent", null, request.getLocale()));
+                messages.getMessage("message.user.resetPassEmailSent", null, request.getLocale()));
     }
 
     @GetMapping("/resetPasswordPage")
@@ -101,7 +101,7 @@ public class RegistrationController {
                                           Locale locale) {
 
         registrationService.changeForgottenPassword(passwordDto);
-        model.addAttribute("message", messages.getMessage("message.updatePasswordSuc", null, locale));
+        model.addAttribute("message", messages.getMessage("message.user.updatePasswordSuc", null, locale));
         return "login";
     }
 }

@@ -1,39 +1,45 @@
 package com.explorers.smartparking.parking.web.controller;
 
 import com.explorers.smartparking.parking.service.ParkingService;
+import com.explorers.smartparking.user.web.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/guard")
 public class ParkGuardController {
 
     private final ParkingService parkingService;
+    private final MessageSource messages;
 
     @Autowired
-    public ParkGuardController(ParkingService parkingService) {
+    public ParkGuardController(ParkingService parkingService, MessageSource messages) {
         this.parkingService = parkingService;
+        this.messages = messages;
     }
 
     @PutMapping("/occupyPlace")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void occupyPlace(@RequestParam Long parkingId,
-                            @RequestParam Long placeNumber,
-                            @RequestParam String userEmail) {
+    public GenericResponse occupyPlace(@RequestParam Long parkingId,
+                                       @RequestParam Long placeNumber,
+                                       @RequestParam String userEmail,
+                                       HttpServletRequest request) {
 
         parkingService.occupyPlace(parkingId, placeNumber, userEmail);
+        return new GenericResponse(messages.getMessage("message.parking.occupied", null, request.getLocale()));
     }
 
     @PutMapping("/makeRoom")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void makeRoom(@RequestParam Long parkingId,
-                         @RequestParam Long placeNumber) {
+    public GenericResponse makeRoom(@RequestParam Long parkingId,
+                                    @RequestParam Long placeNumber,
+                                    HttpServletRequest request) {
 
         parkingService.makeRoom(parkingId, placeNumber);
+        return new GenericResponse(messages.getMessage("message.parking.dismissed", null, request.getLocale()));
     }
 }

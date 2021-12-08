@@ -1,4 +1,4 @@
-package com.explorers.smartparking.parking.exception;
+package com.explorers.smartparking.parking.error;
 
 public class NoEnoughMoneyException extends RuntimeException {
 

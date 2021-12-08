@@ -30,7 +30,7 @@ public class MailUtil {
                                            String userEmail) {
 
         String url = String.format("%s/registrationConfirm?token=%s", contextPath, token);
-        String message = messages.getMessage("message.email.btn.enableAccount", null, locale);
+        String message = messages.getMessage("message.user.email.btn.enableAccount", null, locale);
         mailSender.send(constructEmail("Enable Account",
                 message + "\r\n" + url, userEmail));
     }
@@ -41,7 +41,7 @@ public class MailUtil {
                                             String userEmail) {
 
         String url = String.format("%s/resetPasswordPage?token=%s", contextPath, token);
-        String message = messages.getMessage("message.email.btn.resetPassword", null, locale);
+        String message = messages.getMessage("message.user.email.btn.resetPassword", null, locale);
         mailSender.send(constructEmail("Reset Password", message + "\r\n" + url, userEmail));
     }
 
