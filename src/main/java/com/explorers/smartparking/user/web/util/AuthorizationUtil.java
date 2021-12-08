@@ -9,8 +9,7 @@ public class AuthorizationUtil {
     public static long getUserId() {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (user instanceof User) { //TODO simplify
-            User user1 = (User) user;
+        if (user instanceof User user1) {
             return user1.getId();
         } else {
             throw new UnauthorizedException("Can`t get id because user unauthorized");
