@@ -1,4 +1,4 @@
-package com.explorers.smartparking.user.web.error;
+package com.explorers.smartparking.user.error;
 
 public class UserHasNotRoleException extends RuntimeException {
 

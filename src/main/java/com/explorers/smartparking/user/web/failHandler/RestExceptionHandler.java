@@ -1,6 +1,6 @@
 package com.explorers.smartparking.user.web.failHandler;
 
-import com.explorers.smartparking.user.web.error.*;
+import com.explorers.smartparking.user.error.*;
 import com.explorers.smartparking.user.web.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

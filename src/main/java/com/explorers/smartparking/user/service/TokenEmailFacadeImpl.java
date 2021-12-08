@@ -2,7 +2,7 @@ package com.explorers.smartparking.user.service;
 
 import com.explorers.smartparking.user.persistence.model.Token;
 import com.explorers.smartparking.user.persistence.model.User;
-import com.explorers.smartparking.user.web.error.InvalidTokenException;
+import com.explorers.smartparking.user.error.InvalidTokenException;
 import com.explorers.smartparking.user.web.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

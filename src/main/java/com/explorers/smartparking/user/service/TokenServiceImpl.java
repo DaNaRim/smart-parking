@@ -5,7 +5,7 @@ import com.explorers.smartparking.user.persistence.dao.UserDao;
 import com.explorers.smartparking.user.persistence.model.Token;
 import com.explorers.smartparking.user.persistence.model.TokenType;
 import com.explorers.smartparking.user.persistence.model.User;
-import com.explorers.smartparking.user.web.error.InvalidTokenException;
+import com.explorers.smartparking.user.error.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

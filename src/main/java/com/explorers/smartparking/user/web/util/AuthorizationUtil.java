@@ -1,7 +1,7 @@
 package com.explorers.smartparking.user.web.util;
 
 import com.explorers.smartparking.user.persistence.model.User;
-import com.explorers.smartparking.user.web.error.UnauthorizedException;
+import com.explorers.smartparking.user.error.UnauthorizedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthorizationUtil {

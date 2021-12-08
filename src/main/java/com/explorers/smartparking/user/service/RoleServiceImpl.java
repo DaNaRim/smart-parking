@@ -3,9 +3,9 @@ package com.explorers.smartparking.user.service;
 import com.explorers.smartparking.user.persistence.dao.RoleDao;
 import com.explorers.smartparking.user.persistence.model.Role;
 import com.explorers.smartparking.user.persistence.model.RoleName;
-import com.explorers.smartparking.user.web.error.UserHasNotRoleException;
-import com.explorers.smartparking.user.web.error.UserHasRoleException;
-import com.explorers.smartparking.user.web.error.UserNotFoundException;
+import com.explorers.smartparking.user.error.UserHasNotRoleException;
+import com.explorers.smartparking.user.error.UserHasRoleException;
+import com.explorers.smartparking.user.error.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
