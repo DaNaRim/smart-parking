@@ -1,5 +1,6 @@
 package com.explorers.smartparking.parking.persistence.model;
 
+import com.explorers.smartparking.user.persistence.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -20,13 +21,12 @@ public class ParkingPlace {
     @Column(nullable = false, updatable = false)
     private Long number;
 
-    private boolean isBusy;
-
     private Date dateOccupied;
 
-    private boolean isBooked;
-
     private Date dateBooked;
+
+    @ManyToOne
+    private User userOccupied;
 
     public ParkingPlace() {
     }
@@ -34,6 +34,14 @@ public class ParkingPlace {
     public ParkingPlace(Long number, Parking parking) {
         this.number = number;
         this.parking = parking;
+    }
+
+    public boolean isBusy() {
+        return dateOccupied != null;
+    }
+
+    public boolean isBooked() {
+        return dateBooked != null;
     }
 
     public Long getId() {
@@ -60,14 +68,6 @@ public class ParkingPlace {
         this.number = number;
     }
 
-    public boolean isBusy() {
-        return isBusy;
-    }
-
-    public void setBusy(boolean busy) {
-        isBusy = busy;
-    }
-
     public Date getDateOccupied() {
         return dateOccupied;
     }
@@ -76,19 +76,19 @@ public class ParkingPlace {
         this.dateOccupied = dateOccupied;
     }
 
-    public boolean isBooked() {
-        return isBooked;
-    }
-
-    public void setBooked(boolean booked) {
-        isBooked = booked;
-    }
-
     public Date getDateBooked() {
         return dateBooked;
     }
 
     public void setDateBooked(Date dateBooked) {
         this.dateBooked = dateBooked;
+    }
+
+    public User getUserOccupied() {
+        return userOccupied;
+    }
+
+    public void setUserOccupied(User userOccupied) {
+        this.userOccupied = userOccupied;
     }
 }
