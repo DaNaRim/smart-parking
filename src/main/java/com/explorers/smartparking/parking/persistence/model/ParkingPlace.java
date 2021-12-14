@@ -36,10 +36,12 @@ public class ParkingPlace {
         this.parking = parking;
     }
 
+    @JsonIgnore
     public boolean isBusy() {
         return dateOccupied != null;
     }
 
+    @JsonIgnore
     public boolean isBooked() {
         return dateBooked != null;
     }

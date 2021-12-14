@@ -1,9 +1,6 @@
 package com.explorers.smartparking.parking.web.failHandler;
 
-import com.explorers.smartparking.parking.error.NoEnoughMoneyException;
-import com.explorers.smartparking.parking.error.ParkingExistsException;
-import com.explorers.smartparking.parking.error.ParkingPlaceBusyException;
-import com.explorers.smartparking.parking.error.ParkingPlaceNotFoundException;
+import com.explorers.smartparking.parking.error.*;
 import com.explorers.smartparking.user.web.util.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -39,7 +36,7 @@ public class ParkFailHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({NoEnoughMoneyException.class})
     public ResponseEntity<Object> handleNoMoney(RuntimeException e, WebRequest request) {
-        logger.warn("HTTP 400: No enough money " + e.getMessage());
+        logger.warn("HTTP 400: No enough money :" + e.getMessage());
 
         GenericResponse responseBody = new GenericResponse(
                 messages.getMessage("error.parking.noMoney", null, request.getLocale()), "NoEnoughMoney");
@@ -49,7 +46,7 @@ public class ParkFailHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ParkingExistsException.class})
     public ResponseEntity<Object> handleParkingExists(RuntimeException e, WebRequest request) {
-        logger.warn("HTTP 400: Parking already exists " + e.getMessage());
+        logger.warn("HTTP 400: Parking already exists :" + e.getMessage());
 
         GenericResponse responseBody = new GenericResponse(
                 messages.getMessage("error.parking.exists", null, request.getLocale()), "ParkingExists");
@@ -59,7 +56,7 @@ public class ParkFailHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ParkingPlaceBusyException.class})
     public ResponseEntity<Object> handleParkingPlaceBusy(RuntimeException e, WebRequest request) {
-        logger.warn("HTTP 400: Parking place is busy " + e.getMessage());
+        logger.warn("HTTP 400: Parking place is busy :" + e.getMessage());
 
         GenericResponse responseBody = new GenericResponse(
                 messages.getMessage("error.parking.busy", null, request.getLocale()), "ParkingPlaceBusy");
@@ -67,9 +64,19 @@ public class ParkFailHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler({ParkingPlaceNotBusyException.class})
+    public ResponseEntity<Object> handleParkingPlaceNotBusy(RuntimeException e, WebRequest request) {
+        logger.warn("HTTP 400: Parking place is free :" + e.getMessage());
+
+        GenericResponse responseBody = new GenericResponse(
+                messages.getMessage("error.parking.notBusy", null, request.getLocale()), "ParkingPlaceNotBusy");
+
+        return handleExceptionInternal(e, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
     @ExceptionHandler({ParkingPlaceNotFoundException.class})
     public ResponseEntity<Object> handleParkingPlaceNotFound(RuntimeException e, WebRequest request) {
-        logger.warn("HTTP 400: Parking not found " + e.getMessage());
+        logger.warn("HTTP 400: Parking not found :" + e.getMessage());
 
         GenericResponse responseBody = new GenericResponse(
                 messages.getMessage("error.parking.notFound", null, request.getLocale()), "ParkingPlaceNotFound");

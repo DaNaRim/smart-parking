@@ -1,9 +1,6 @@
 package com.explorers.smartparking.parking.service;
 
-import com.explorers.smartparking.parking.error.NoEnoughMoneyException;
-import com.explorers.smartparking.parking.error.ParkingExistsException;
-import com.explorers.smartparking.parking.error.ParkingPlaceBusyException;
-import com.explorers.smartparking.parking.error.ParkingPlaceNotFoundException;
+import com.explorers.smartparking.parking.error.*;
 import com.explorers.smartparking.parking.persistence.dao.ParkingDao;
 import com.explorers.smartparking.parking.persistence.dao.ParkingPlaceDao;
 import com.explorers.smartparking.parking.persistence.model.Parking;
@@ -90,6 +87,10 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public double makeRoom(Long parkingId, Long placeNumber) {
         ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
+
+        if (!pp.isBusy()) {
+            throw new ParkingPlaceNotBusyException("Parking place is free");
+        }
         User user = userService.findByEmail(pp.getUserOccupied().getEmail());
 
         double moneyToPay = pp.getParking().getPricePerHour() * getOccupiedHours(pp.getDateOccupied());
