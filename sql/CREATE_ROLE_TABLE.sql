@@ -11,7 +11,7 @@ VALUES ('USER'),
        ('SUPER_ADMIN'),
        ('GUARD');
 
-CREATE TABLE IF NOT EXISTS USER_ROLE
+CREATE TABLE IF NOT EXISTS User_role
 (
     user_id INT REFERENCES Users,
     role_id INT REFERENCES Role,
