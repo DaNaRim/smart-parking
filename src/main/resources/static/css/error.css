@@ -1,0 +1,15 @@
+.error {
+    padding: 200px 0;
+}
+
+.msg {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+}
+
+.icon {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,29 @@
+.park_main {
+    padding: 200px 0;
+}
+
+.msg {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+}
+
+.icons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.icons img {
+    height: 100px;
+    width: 100px;
+    margin-left: 30px;
+}
+
+.icons img:first-child {
+    margin-left: 0;
+}
+
+.icon_turn {
+    transform: rotate(-90deg);
+}

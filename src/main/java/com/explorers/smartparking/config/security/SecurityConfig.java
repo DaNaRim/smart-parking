@@ -33,20 +33,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/",
+                .mvcMatchers(
+                        "/css/**",
+                        "/js/**",
+                        "/img/**",
+                        "/icons/**",
+
+                        "/",
                         "/login",
                         "/registration",
                         "/registerUser",
                         "/registrationConfirm",
                         "/resendRegistrationToken",
-                        "/resetPassword",
+                        "/forgetPassword",
                         "/sendPassResetToken",
                         "/resetPasswordPage",
+                        "/updateFogotPassword",
                         "/updateForgottenPassword").permitAll()
                 .mvcMatchers("/user/**",
                         "/parking",
                         "/park/**").hasRole(RoleName.USER.name())
-                .mvcMatchers("/guard").hasRole(RoleName.GUARD.name())
+                .mvcMatchers("/guard/**").hasRole(RoleName.GUARD.name())
                 .mvcMatchers("/parkAdmin/**").hasRole(RoleName.ADMIN.name())
                 .mvcMatchers("/superAdmin/**").hasRole(RoleName.SUPER_ADMIN.name())
                 .anyRequest().authenticated()
@@ -57,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //                .and()
 //                .exceptionHandling()
-//                .accessDeniedPage("/error/403")
+//                .accessDeniedPage("/forbidden")
 
 //                .and()
                 .formLogin()

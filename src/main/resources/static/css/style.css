@@ -1,0 +1,205 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-width: 1200px;
+}
+
+h6, h5, h4, h3, h2, h1 {
+    margin-bottom: 0;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
+button:focus, div {
+    outline: none;
+}
+
+/*
+colors
+ */
+
+.bg1 {
+    background-color: #181818;
+}
+
+.bg2 {
+    background-color: #202020;
+}
+
+/*
+header
+ */
+
+.main_header {
+    width: 100%;
+    padding: 30px 80px 0;
+}
+
+.header_top {
+    height: 30px;
+    padding-right: 10px;
+    text-align: right;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.user_logo {
+    height: 22px;
+    width: 22px;
+    margin-right: 10px;
+}
+
+.header_bottom {
+    width: 100%;
+    padding: 20px 0 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    color: white;
+    display: flex;
+    align-items: center
+}
+
+.logo_icon {
+    width: 120px;
+    height: 80px;
+}
+
+.header_nav {
+    padding-top: 20px;
+}
+
+.header_nav > ul {
+    display: flex;
+}
+
+.header_nav > ul > li {
+    margin-right: 20px;
+    text-transform: uppercase;
+    list-style-type: none;
+}
+
+.header_nav_link {
+    color: #fff;
+    font-size: 14px;
+}
+
+.header_nav_link:hover {
+    color: white;
+    border-bottom: 1px solid #fff;
+}
+
+/*
+footer
+ */
+
+.main_footer {
+    height: 150px;
+}
+
+.footer_text {
+    text-align: center;
+    color: #fff;
+    padding-top: 50px;
+}
+
+/*
+form
+ */
+
+.simple_form_section {
+    min-height: 760px;
+    padding: 120px 0 120px;
+}
+
+.form_wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.form_wrap > img {
+    width: 460px;
+    height: 820px;
+    top: 50%;
+    left: 50%;
+    object-fit: cover;
+}
+
+.fw_small > img {
+    height: 520px;
+}
+
+.form {
+    width: 460px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 60px;
+    position: relative;
+}
+
+.second_form {
+    position: absolute;
+    top: 62.5%;
+    left: 61%;
+}
+
+.form h1 {
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1.35em;
+    font-size: 40px;
+}
+
+.form p {
+    margin-top: 50px;
+    color: #fff;
+    line-height: 1.75em;
+    font-size: 18px;
+}
+
+.simple_form {
+    margin-top: 50px;
+}
+
+.form input {
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    color: white;
+    background: transparent;
+    border: rgb(227, 227, 227) 1px solid;
+    padding: 3px 3px 3px 30px;
+    cursor: text;
+    font-size: 15px;
+}
+
+.form input:first-child {
+    /*inputs must be in div*/
+    margin-top: 0;
+}
+
+.form input::placeholder {
+    color: white;
+}
+
+.form button {
+    margin-top: 30px;
+    height: 55px;
+    width: 180px;
+    background-color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.form button:hover {
+    background-color: transparent;
+    border: white 1px solid;
+    color: white;
+    transition: all 0.3s ease;
+}
