@@ -104,7 +104,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public void bookPlace(Long parkingId, Long placeNumber, String userEmail) {
+    public void bookPlace(Long parkingId, Long placeNumber, String userEmail) { //TODO check for book one place
         ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
         User user = userService.findByEmail(userEmail);
 

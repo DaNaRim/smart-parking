@@ -1,5 +1,6 @@
 package com.explorers.smartparking.user.service;
 
+import com.explorers.smartparking.user.error.InvalidBalanceException;
 import com.explorers.smartparking.user.persistence.dao.UserDao;
 import com.explorers.smartparking.user.persistence.model.User;
 import com.explorers.smartparking.user.web.dto.UpdatePasswordDto;
@@ -55,6 +56,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public double putMoney(long userId, int money) {
+
+        if (money < 0) {
+            throw new InvalidBalanceException("can`t add negative money");
+        }
+
         User user = findById(userId);
         user.setBalance(user.getBalance() + money);
         return user.getBalance();

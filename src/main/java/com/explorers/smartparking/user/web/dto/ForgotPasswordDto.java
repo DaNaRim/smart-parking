@@ -9,9 +9,9 @@ import javax.validation.constraints.Size;
 @PasswordMatches
 public class ForgotPasswordDto extends PasswordEntity {
 
-    @ValidPassword
     @NotBlank
     @Size(min = 8, max = 30)
+    @ValidPassword
     private String newPassword;
 
     @NotBlank

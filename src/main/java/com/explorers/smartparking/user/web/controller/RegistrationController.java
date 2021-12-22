@@ -96,7 +96,7 @@ public class RegistrationController {
     }
 
     @PutMapping("/updateForgottenPassword")
-    public String updateForgottenPassword(@RequestBody @Valid ForgotPasswordDto passwordDto, //FIXME
+    public String updateForgottenPassword(@RequestBody @Valid ForgotPasswordDto passwordDto,
                                           Model model,
                                           Locale locale) {
 

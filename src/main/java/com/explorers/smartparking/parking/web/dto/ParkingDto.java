@@ -16,7 +16,7 @@ public class ParkingDto {
     private Integer countPlaces;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private Double pricePerHour;
 
     public Long getX() {

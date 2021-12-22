@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailSendException;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -69,6 +70,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler({InvalidBalanceException.class})
+    public ResponseEntity<Object> handleInvalidBalance(RuntimeException e, WebRequest request) {
+        logger.warn("HTTP 400: Invalid Balance " + e.getMessage());
+
+        GenericResponse responseBody = new GenericResponse(
+                messages.getMessage("error.user.invalidBalance", null, request.getLocale()), "InvalidBalance");
+
+        return handleExceptionInternal(e, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
     @ExceptionHandler({UnauthorizedException.class})
     public ResponseEntity<Object> handleUnauthorized(RuntimeException e, WebRequest request) {
         logger.warn("HTTP 401: Unauthorized " + e.getMessage());
@@ -97,7 +108,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
-    @ExceptionHandler({MailAuthenticationException.class})
+    @ExceptionHandler({MailAuthenticationException.class, MailSendException.class})
     public ResponseEntity<Object> handleMail(RuntimeException e, WebRequest request) {
         logger.error("HTTP 500: MailAuthenticationException " + e.getMessage());
         GenericResponse responseBody = new GenericResponse(
