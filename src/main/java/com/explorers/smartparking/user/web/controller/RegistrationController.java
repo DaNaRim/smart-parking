@@ -1,10 +1,9 @@
 package com.explorers.smartparking.user.web.controller;
 
 import com.explorers.smartparking.user.persistence.model.User;
+import com.explorers.smartparking.user.service.RegistrationService;
 import com.explorers.smartparking.user.service.TokenEmailFacade;
 import com.explorers.smartparking.user.service.TokenService;
-import com.explorers.smartparking.user.service.RegistrationService;
-import com.explorers.smartparking.user.service.event.OnRegistrationCompleteEvent;
 import com.explorers.smartparking.user.web.dto.ForgotPasswordDto;
 import com.explorers.smartparking.user.web.dto.RegistrationDto;
 import com.explorers.smartparking.user.web.util.GenericResponse;
@@ -14,6 +13,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,15 +42,29 @@ public class RegistrationController {
         this.messages = messages;
     }
 
+    @GetMapping("/registration")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("registrationDto", new RegistrationDto());
+        return "registration";
+    }
+
     @PostMapping("/registerUser")
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    GenericResponse registerUserAccount(@RequestBody @Valid RegistrationDto registrationDto,
-                                        HttpServletRequest request) {
+    public String registerUserAccount(@ModelAttribute @Valid RegistrationDto registrationDto,
+                                      BindingResult result,
+                                      HttpServletRequest request,
+                                      Model model) {
 
-        User user = registrationService.registerNewUserAccount(registrationDto);
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request));
-        return new GenericResponse(messages.getMessage("message.user.accountRegistered", null, request.getLocale()));
+        if (result.hasErrors()) return "registration";
+
+//        User user = registrationService.registerNewUserAccount(registrationDto);
+//        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request));
+
+        model.addAttribute(
+                "message",
+                messages.getMessage("message.user.accountRegistered", null, request.getLocale())
+        );
+        return "registration";
     }
 
     @GetMapping("/registrationConfirm")

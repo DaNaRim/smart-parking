@@ -5,20 +5,20 @@
     <link rel="stylesheet" href="../static/css/bootstrap-reboot.css" th:href="@{/css/bootstrap-reboot.css}">
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="../static/css/registration.css" th:href="@{/css/registration.css}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/3.1.1/jquery.serializejson.min.js"></script>
-    <script src="../static/js/registration.js" th:src="@{js/registration.js}"></script>
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/3.1.1/jquery.serializejson.min.js"></script>-->
+    <!--    <script src="../static/js/registration.js" th:src="@{js/registration.js}"></script>-->
     <title>Smart parking</title>
 </head>
 <body>
 <header class="main_header bg1">
     <div class="header_top">
-        <img alt="user" class="user_logo" src="../static/icons/user.svg" th:src="@{/icons/user.svg}">
+        <img class="user_logo" alt="user" src="../static/icons/user.svg" th:src="@{/icons/user.svg}">
         user_name
     </div>
     <div class="header_bottom">
         <div class="logo">
-            <img alt="logo" class="logo_icon" src="../static/icons/logoCircle.png" th:src="@{/icons/logoCircle.png}"/>
+            <img class="logo_icon" alt="logo" src="../static/icons/logoCircle.png" th:src="@{/icons/logoCircle.png}"/>
             <h3>SMART PARKING</h3>
         </div>
         <div class="menu">
@@ -41,33 +41,65 @@
 </header>
 
 <section class="reg bg2">
+    <div class="alert alert-info" th:if="${message != null}" th:text="${message}"></div>
+
     <div class="form_wrap">
         <img src="../static/img/park_empty.jpg" alt="parking_photo" th:src="@{img/park_empty.jpg}"/>
         <div class="form">
-            <form id="registration-form">
+            <form method="post" id="registration-form" th:action="@{/registerUser}" th:object="${registrationDto}">
                 <h1>Приєднуйся до нас</h1>
                 <p>Форма реєстрації</p>
-                <div>
-                    <input id="firstName" name="firstName" placeholder="ім'я" type="text">
-                    <input id="lastName" name="lastName" placeholder="прізвище" required type="text">
-                    <input id="email" name="email" placeholder="пошта" required type="email">
-                    <input id="password" name="password" placeholder="пароль" required type="password">
-                    <input id="matchingPassword" name="matchingPassword"
-                           placeholder="підтвердження паролю" required type="password">
+                <fieldset>
+                    <input type="text"
+                           id="firstName"
+                           name="firstName"
+                           placeholder="ім'я"
+                           required
+                           th:value="*{firstName}">
+                    <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+
+                    <input type="text"
+                           id="lastName"
+                           name="lastName"
+                           placeholder="прізвище"
+                           required
+                           th:value="*{lastName}">
+                    <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+
+                    <input type="email" id="email" name="email" placeholder="пошта" required th:value="*{email}">
+                    <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="пароль"
+                           required
+                           th:value="*{password}">
+                    <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+                    <input type="password"
+                           id="matchingPassword"
+                           name="matchingPassword"
+                           placeholder="підтвердження паролю"
+                           required
+                           th:value="*{matchingPassword}">
+                    <div class="error"
+                         th:if="${#fields.hasErrors('matchingPassword')}"
+                         th:errors="*{matchingPassword}"></div>
+                </fieldset>
+                <div class="error" th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+
+                <div class="buttons">
+                    <button type="submit">Зареєструватися</button>
+                    <a class="link_button" href="login.html" th:href="@{/login}">Вже є аккаунт</a>
                 </div>
-                <button type="submit">Зареєструватися</button>
             </form>
-            <a class="second_form sf_reg" href="login.html" th:href="@{/login}">
-                <button type="submit">Вже є аккаунт</button>
-            </a>
         </div>
     </div>
 </section>
 
 <footer class="main_footer bg1">
-    <div class="footer_text">
-        @explorers_team | Сайт створено з божою поміччю
-    </div>
+    <div class="footer_text">@explorers_team | Сайт створено з божою поміччю</div>
 </footer>
 </body>
 </html>
