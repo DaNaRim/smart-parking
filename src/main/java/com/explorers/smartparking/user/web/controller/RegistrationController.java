@@ -48,7 +48,7 @@ public class RegistrationController {
         return "registration";
     }
 
-    @PostMapping("/registerUser")
+    @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
     public String registerUserAccount(@ModelAttribute @Valid RegistrationDto registrationDto,
                                       BindingResult result,
