@@ -101,7 +101,7 @@ public class RegistrationController {
 
         tokenService.validatePasswordResetToken(token);
         model.addAttribute("token", token);
-        return "redirect:/updateFogotPassword?lang=" + locale.getLanguage();
+        return "redirect:/updateForgotPassword?lang=" + locale.getLanguage();
     }
 
     @PutMapping("/updateForgottenPassword")
