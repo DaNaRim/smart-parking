@@ -18,7 +18,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 
 @Controller
 public class RegistrationController {
@@ -104,10 +106,19 @@ public class RegistrationController {
         return "redirect:/updateForgotPassword?lang=" + locale.getLanguage();
     }
 
-    @PutMapping("/updateForgottenPassword")
-    public String updateForgottenPassword(@RequestBody @Valid ForgotPasswordDto passwordDto,
+    @GetMapping("/updateForgotPassword")
+    public String showUpdateForgotPasswordPage(Model model) {
+        model.addAttribute("forgotPasswordDto", new ForgotPasswordDto());
+        return "updateForgotPassword";
+    }
+
+    @RequestMapping(path = "/updateForgottenPassword", method = {RequestMethod.PUT, RequestMethod.POST})
+    public String updateForgottenPassword(@ModelAttribute @Valid ForgotPasswordDto passwordDto,
+                                          BindingResult result,
                                           Model model,
                                           Locale locale) {
+
+        if (result.hasErrors()) return "updateForgotPassword";
 
         registrationService.changeForgottenPassword(passwordDto);
         model.addAttribute("message", messages.getMessage("message.user.updatePasswordSuc", null, locale));

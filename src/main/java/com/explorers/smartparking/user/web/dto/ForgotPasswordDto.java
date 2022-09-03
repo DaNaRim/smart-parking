@@ -9,15 +9,14 @@ import javax.validation.constraints.Size;
 @PasswordMatches
 public class ForgotPasswordDto extends PasswordEntity {
 
-    @NotBlank
-    @Size(min = 8, max = 30)
+    @NotBlank(message = "{validation.user.required.password}")
     @ValidPassword
     private String newPassword;
 
-    @NotBlank
+    @NotBlank(message = "{validation.user.required.matchingPassword}")
     private String matchingPassword;
 
-    @NotBlank
+    @NotBlank(message = "{validation.user.required.token}")
     private String token;
 
     @Override
