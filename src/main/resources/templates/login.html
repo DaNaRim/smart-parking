@@ -2,20 +2,20 @@
 <html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/css/bootstrap-reboot.css" rel="stylesheet" th:href="@{/css/bootstrap-reboot.css}">
-    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
-    <link href="../static/css/login.css" rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" href="../static/css/bootstrap-reboot.css" th:href="@{/css/bootstrap-reboot.css}">
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
     <title>Smart parking</title>
 </head>
 <body>
 <header class="main_header bg1">
     <div class="header_top">
-        <img alt="user" class="user_logo" src="../static/icons/user.svg" th:src="@{/icons/user.svg}">
+        <img class="user_logo" alt="user" src="../static/icons/user.svg" th:src="@{/icons/user.svg}">
         user_name
     </div>
     <div class="header_bottom">
         <div class="logo">
-            <img alt="logo" class="logo_icon" src="../static/icons/logoCircle.png" th:src="@{/icons/logoCircle.png}"/>
+            <img class="logo_icon" alt="logo" src="../static/icons/logoCircle.png" th:src="@{/icons/logoCircle.png}"/>
             <h3>SMART PARKING</h3>
         </div>
         <div class="menu">
@@ -41,9 +41,8 @@
     <div class="log_wrap">
         <div class="msgs-container">
             <div class="alert alert-info" th:if="${param.message != null}" th:text="${param.message[0]}">message</div>
-            <div class="alert alert-danger" th:if="${param.error != null}"
-                 th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">
-                error
+            <div class="alert alert-danger" th:if="${param.error != null}">
+                Invalid username and password
             </div>
         </div>
         <div class="form_wrap fw_small">
@@ -52,8 +51,8 @@
                 <form method="POST" th:action="@{/login}">
                     <h1>Увійти в систему</h1>
                     <div class="simple_form">
-                        <input id="username" name="username" placeholder="пошта" required type="email">
-                        <input id="password" name="password" placeholder="пароль" required type="password">
+                        <input type="email" id="username" name="username" placeholder="пошта" required>
+                        <input type="password" id="password" name="password" placeholder="пароль" required>
                     </div>
                     <button type="submit">Увійти</button>
                 </form>
