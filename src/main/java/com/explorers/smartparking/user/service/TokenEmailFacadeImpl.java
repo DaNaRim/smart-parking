@@ -1,14 +1,14 @@
 package com.explorers.smartparking.user.service;
 
+import com.explorers.smartparking.user.error.InvalidTokenException;
 import com.explorers.smartparking.user.persistence.model.Token;
 import com.explorers.smartparking.user.persistence.model.User;
-import com.explorers.smartparking.user.error.InvalidTokenException;
 import com.explorers.smartparking.user.web.util.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 @Transactional
@@ -28,18 +28,21 @@ public class TokenEmailFacadeImpl implements TokenEmailFacade {
     }
 
     @Override
-    public void createAndSendVerificationToken(User user, HttpServletRequest request) {
-        Token token = tokenService.createVerificationToken(user);
+    public void createAndSendVerificationToken(User user) {
+        Token token = tokenService.createVerificationToken(user); //TODO optimize
+
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
 
         mailUtil.sendVerificationTokenEmail(
-                getAppUrl(request),
-                request.getLocale(),
+                baseUrl,
+                LocaleContextHolder.getLocale(),
                 token.getToken(),
-                user.getEmail());
+                user.getEmail()
+        );
     }
 
     @Override
-    public void updateAndSendVerificationToken(String userEmail, HttpServletRequest request) {
+    public void updateAndSendVerificationToken(String userEmail) {
         User user = userService.findByEmail(userEmail);
 
         if (user.isEnabled()) {
@@ -47,27 +50,27 @@ public class TokenEmailFacadeImpl implements TokenEmailFacade {
         }
         Token token = tokenService.createVerificationToken(user);
 
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+
         mailUtil.sendVerificationTokenEmail(
-                getAppUrl(request),
-                request.getLocale(),
+                baseUrl,
+                LocaleContextHolder.getLocale(),
                 token.getToken(),
-                userEmail);
+                userEmail
+        );
     }
 
     @Override
-    public void createAndSendPasswordResetToken(String userEmail, HttpServletRequest request) {
-        User user = userService.findByEmail(userEmail);
+    public void createAndSendPasswordResetToken(String userEmail) {
+        User user = userService.findByEmail(userEmail); //TODO optimize
         Token token = tokenService.createPasswordResetToken(user);
 
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+
         mailUtil.sendResetPasswordTokenEmail(
-                getAppUrl(request),
-                request.getLocale(),
+                baseUrl,
+                LocaleContextHolder.getLocale(),
                 token.getToken(),
                 user.getEmail());
-    }
-
-    private String getAppUrl(HttpServletRequest request) {
-        return String.format("http://%s:%d%s",
-                request.getServerName(), request.getServerPort(), request.getContextPath());
     }
 }
