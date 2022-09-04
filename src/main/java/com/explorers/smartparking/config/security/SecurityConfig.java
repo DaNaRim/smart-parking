@@ -50,7 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/resetPasswordPage",
                         "/updateForgotPassword",
                         "/updateForgottenPassword").permitAll()
-                .mvcMatchers("/user/**",
+                .mvcMatchers(
+                        "/user/**",
                         "/parking",
                         "/park/**").hasRole(RoleName.USER.name())
                 .mvcMatchers("/guard/**").hasRole(RoleName.GUARD.name())

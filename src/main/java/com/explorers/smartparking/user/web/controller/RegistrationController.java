@@ -58,7 +58,7 @@ public class RegistrationController {
         if (result.hasErrors()) return "registration";
 
         User user = registrationService.registerNewUserAccount(registrationDto);
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
+//        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
 
         model.addAttribute("message", messages.getMessage("message.user.accountRegistered", null, locale));
         return "registration";
