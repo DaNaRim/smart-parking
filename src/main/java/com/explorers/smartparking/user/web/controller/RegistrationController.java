@@ -18,9 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.Locale;
-import java.util.Objects;
 
 @Controller
 public class RegistrationController {
@@ -45,7 +43,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/registration")
-    public String showRegistrationForm(Model model) {
+    public String showRegistrationPage(Model model) {
         model.addAttribute("registrationDto", new RegistrationDto());
         return "registration";
     }
