@@ -1,0 +1,27 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+    <header class="main_header bg1">
+        <div class="header_top">
+            <img class="user_logo" alt="user" src="../../static/icons/user.svg" th:src="@{/icons/user.svg}">
+            user_name
+        </div>
+        <div class="header_bottom">
+            <div class="logo">
+                <img class="logo_icon"
+                     alt="logo"
+                     src="../../static/icons/logoCircle.png"
+                     th:src="@{/icons/logoCircle.png}"/>
+                <h3>SMART PARKING</h3>
+            </div>
+            <div class="menu">
+                <nav class="header_nav">
+                    <ul>
+                        <li><a class="header_nav_link" th:href="@{/}">Головна</a></li>
+                        <li><a class="header_nav_link" th:href="@{/login}">Вхід</a></li>
+                        <li><a class="header_nav_link" th:href="@{/registration}">Реєстрація</a></li>
+                    </ul>
+                </nav>
+                <!--TODO lang-->
+            </div>
+        </div>
+    </header>
+</th:block>
