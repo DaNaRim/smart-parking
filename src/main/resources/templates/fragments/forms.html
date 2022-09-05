@@ -1,0 +1,17 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="formField (field)"
+     th:with="type=${type?: 'text'},
+              is_required=${is_required?: false},
+              placeholder=${placeholder?: ''},
+              value=${value} ? ${value} : *{__${field}__}">
+
+    <input th:type="${type}"
+           th:id="${field}"
+           th:name="${field}"
+           th:placeholder="${placeholder}"
+           th:required="${is_required} ? 'required' : null"
+           th:value="${value}"
+    >
+    <div class="error" th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}"></div>
+</div>
+

@@ -19,8 +19,11 @@ public class ForgotPasswordDto extends PasswordEntity {
     @NotBlank(message = "{validation.user.required.matchingPassword}")
     private String matchingPassword;
 
-    @NotBlank(message = "{validation.user.required.token}")
-    private String token;
+    private final String token;
+
+    public ForgotPasswordDto(String token) {
+        this.token = token;
+    }
 
     @Override
     public String getPassword() {
@@ -46,9 +49,5 @@ public class ForgotPasswordDto extends PasswordEntity {
 
     public String getToken() {
         return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

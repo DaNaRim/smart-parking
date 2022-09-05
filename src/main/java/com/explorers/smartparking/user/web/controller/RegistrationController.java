@@ -4,7 +4,6 @@ import com.explorers.smartparking.user.persistence.model.User;
 import com.explorers.smartparking.user.service.RegistrationService;
 import com.explorers.smartparking.user.service.TokenEmailFacade;
 import com.explorers.smartparking.user.service.TokenService;
-import com.explorers.smartparking.user.service.event.OnRegistrationCompleteEvent;
 import com.explorers.smartparking.user.web.dto.ForgotPasswordDto;
 import com.explorers.smartparking.user.web.dto.RegistrationDto;
 import com.explorers.smartparking.user.web.util.GenericResponse;
@@ -65,7 +64,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/registrationConfirm")
-    public String confirmRegistration(@RequestParam("token") String token,
+    public String confirmRegistration(@RequestParam("token") String token, //TODO: handle empty token
                                       Locale locale,
                                       Model model) {
 
@@ -105,8 +104,16 @@ public class RegistrationController {
     }
 
     @GetMapping("/updateForgotPassword")
-    public String showUpdateForgotPasswordPage(Model model) {
-        model.addAttribute("forgotPasswordDto", new ForgotPasswordDto());
+    public String showUpdateForgotPasswordPage(@RequestParam(name = "token", required = false) String token,
+                                               Model model) {
+        try {
+            tokenService.validatePasswordResetToken(token);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/errors/badToken";
+        }
+
+        model.addAttribute("forgotPasswordDto", new ForgotPasswordDto(token));
         return "updateForgotPassword";
     }
 

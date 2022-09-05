@@ -168,7 +168,6 @@ form
 
 .form input {
     display: block;
-    margin-top: 10px;
     width: 100%;
     height: 50px;
     color: white;
@@ -177,11 +176,6 @@ form
     padding: 3px 3px 3px 30px;
     cursor: text;
     font-size: 15px;
-}
-
-.form input:first-child {
-    /*inputs must be in div*/
-    margin-top: 0;
 }
 
 .form input::placeholder {
@@ -196,6 +190,14 @@ form
     background-color: white;
     border: none;
     transition: all 0.3s ease;
+}
+
+form fieldset > * {
+    margin-top: 10px;
+}
+
+form fieldset > *:first-child {
+    margin-top: 0;
 }
 
 .link_button {

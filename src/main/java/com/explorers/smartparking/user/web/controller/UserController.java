@@ -38,7 +38,7 @@ public class UserController {
                                  Model model,
                                  Locale locale) {
 
-        if (result.hasErrors()) return "updatePassword";
+        if (result.hasErrors()) return "updatePassword"; //TODO: check old password
 
         userService.changeUserPassword(AuthorizationUtil.getUserId(), updatePasswordDto);
 

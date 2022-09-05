@@ -21,42 +21,16 @@
                 <h1>Приєднуйся до нас</h1>
                 <p>Форма реєстрації</p>
                 <fieldset>
-                    <input type="text"
-                           id="firstName"
-                           name="firstName"
-                           placeholder="ім'я"
-                           required
-                           th:value="*{firstName}">
-                    <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
-
-                    <input type="text"
-                           id="lastName"
-                           name="lastName"
-                           placeholder="прізвище"
-                           required
-                           th:value="*{lastName}">
-                    <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
-
-                    <input type="email" id="email" name="email" placeholder="пошта" required th:value="*{email}">
-                    <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-
-                    <input type="password"
-                           id="password"
-                           name="password"
-                           placeholder="пароль"
-                           required
-                           th:value="*{password}">
-                    <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-
-                    <input type="password"
-                           id="matchingPassword"
-                           name="matchingPassword"
-                           placeholder="підтвердження паролю"
-                           required
-                           th:value="*{matchingPassword}">
-                    <div class="error"
-                         th:if="${#fields.hasErrors('matchingPassword')}"
-                         th:errors="*{matchingPassword}"></div>
+                    <div th:replace="fragments/forms.html
+                     :: formField(field='firstName', placeholder='ім\'я', is_required='true')"></div>
+                    <div th:replace="fragments/forms.html
+                     :: formField(field='lastName', placeholder='прізвище', is_required='true')"></div>
+                    <div th:replace="fragments/forms.html
+                     :: formField(field='email', type='email', placeholder='пошта', is_required='true')"></div>
+                    <div th:replace="fragments/forms.html
+                     :: formField(field='password', type='password', placeholder='пароль', is_required='true')"></div>
+                    <div th:replace="fragments/forms.html
+                     :: formField(field='matchingPassword', type='password', placeholder='підтвердження паролю', is_required='true')"></div>
                 </fieldset>
                 <div class="error" th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
 

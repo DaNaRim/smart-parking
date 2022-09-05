@@ -49,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/sendPassResetToken",
                         "/resetPasswordPage",
                         "/updateForgotPassword",
-                        "/updateForgottenPassword").permitAll()
+                        "/updateForgottenPassword",
+                        "/errors/badToken").permitAll()
                 .mvcMatchers(
                         "/user/**",
                         "/parking",
