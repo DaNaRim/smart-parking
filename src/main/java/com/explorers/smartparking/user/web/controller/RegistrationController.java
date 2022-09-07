@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 @Controller
+@RequestMapping({"/", "/{lang}"})
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -39,6 +40,11 @@ public class RegistrationController {
         this.tokenEmailFacade = tokenEmailFacade;
         this.eventPublisher = eventPublisher;
         this.messages = messages;
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 
     @GetMapping("/registration")

@@ -15,9 +15,26 @@
             <div class="menu">
                 <nav class="header_nav">
                     <ul>
-                        <li><a class="header_nav_link" th:href="@{/}">Головна</a></li>
-                        <li><a class="header_nav_link" th:href="@{/login}">Вхід</a></li>
-                        <li><a class="header_nav_link" th:href="@{/registration}">Реєстрація</a></li>
+                        <li><a class="header_nav_link"
+                               th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__}"
+                               th:text="#{header.nav.main}"></a></li>
+                        <li><a class="header_nav_link"
+                               th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__/login}"
+                               th:text="#{header.nav.login}"></a></li>
+                        <li><a class="header_nav_link"
+                               th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__/registration}"
+                               th:text="#{header.nav.registration}"></a></li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a th:href="${#httpServletRequest.requestURI.replace(#locale.getLanguage(), 'en')}">en</a>
+                        </li>
+                        <li>
+                            <a th:href="${#httpServletRequest.requestURI.replace(#locale.getLanguage(), 'ru')}">ru</a>
+                        </li>
+                        <li>
+                            <a th:href="${#httpServletRequest.requestURI.replace(#locale.getLanguage(), 'uk')}">uk</a>
+                        </li>
                     </ul>
                 </nav>
                 <!--TODO lang-->

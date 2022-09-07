@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:lang="${#locale.getLanguage()}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/css/bootstrap-reboot.css" th:href="@{/css/bootstrap-reboot.css}">
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
-    <title>Smart parking</title>
+    <title th:text="#{login.title}"></title>
 </head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
@@ -14,23 +14,31 @@
     <div class="log_wrap">
         <div class="msgs-container">
             <div class="alert alert-info" th:if="${param.message != null}" th:text="${param.message[0]}">message</div>
-            <div class="alert alert-danger" th:if="${param.error != null}">
-                Invalid username and password
-            </div>
+            <div class="alert alert-danger"
+                 th:if="${param.error != null}"
+                 th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}"></div>
         </div>
         <div class="form_wrap fw_small">
             <img alt="parking_photo" src="../static/img/park_empty.jpg" th:src="@{/img/park_empty.jpg}">
             <div class="form">
                 <form method="POST" th:action="@{/login}">
-                    <h1>Увійти в систему</h1>
+                    <h1 th:text="#{login.h1}"></h1>
                     <div class="simple_form">
-                        <input type="email" id="username" name="username" placeholder="пошта" required>
-                        <input type="password" id="password" name="password" placeholder="пароль" required>
+                        <input type="email"
+                               id="username"
+                               name="username"
+                               th:placeholder="#{login.form.placeholder.email}"
+                               required>
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               th:placeholder="#{login.form.placeholder.password}"
+                               required>
                     </div>
-                    <button type="submit">Увійти</button>
+                    <button type="submit" th:text="#{login.form.button.submit}"></button>
                 </form>
                 <a class="second_form" href="forgotPassword.html" th:href="@{/forgotPassword}">
-                    <button type="submit">Забув пароль</button>
+                    <button th:text="#{login.form.button.forget}"></button>
                 </a>
             </div>
         </div>

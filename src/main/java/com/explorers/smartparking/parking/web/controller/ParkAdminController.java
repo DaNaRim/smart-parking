@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/parkAdmin")
+@RequestMapping({"/parkAdmin", "/{lang}/parkAdmin"})
 public class ParkAdminController {
 
     private final ParkingService parkingService;

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/superAdmin")
+@RequestMapping({"/superAdmin", "/{lang}/superAdmin"})
 public class SuperAdminController {
 
     private final RoleService roleService;

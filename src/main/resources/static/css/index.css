@@ -39,7 +39,7 @@ bridge
     padding: 150px 200px 150px;
 }
 
-.bridge_text > h1 {
+.bridge_text > h2 {
     color: #fff;
     text-transform: uppercase;
     font-size: 72px;
@@ -61,7 +61,7 @@ about_app
     color: #fff;
 }
 
-.about_app > h1 {
+.about_app > h2 {
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
@@ -98,7 +98,7 @@ park_carousel
     margin-top: 200px;
 }
 
-.mask h1 {
+.mask h2 {
     text-transform: uppercase;
     font-weight: bold;
 }

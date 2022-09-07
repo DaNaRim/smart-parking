@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping({"/user", "/{lang}/user"})
 public class UserController {
 
     private final UserService userService;

@@ -16,7 +16,7 @@ import java.util.Properties;
 
 public class ValidPasswordValidator implements ConstraintValidator<ValidPassword, String> {
 
-    private static final String PASSAY_MESSAGE_FILE_PATH = "src/main/resources/messages/%s.properties";
+    private static final String PASSAY_MESSAGE_FILE_PATH = "src/main/resources/validation_%s.properties";
 
     private final Log logger = LogFactory.getLog(ValidPasswordValidator.class);
 

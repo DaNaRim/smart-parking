@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/guard")
+@RequestMapping({"/guard", "/{lang}/guard"})
 public class ParkGuardController {
 
     private final ParkingService parkingService;

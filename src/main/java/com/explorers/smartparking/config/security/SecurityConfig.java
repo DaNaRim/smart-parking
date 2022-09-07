@@ -1,5 +1,6 @@
 package com.explorers.smartparking.config.security;
 
+import com.explorers.smartparking.config.spring.MvcConfig;
 import com.explorers.smartparking.user.persistence.model.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -34,14 +36,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers(
-                        "/css/**",
-                        "/js/**",
-                        "/img/**",
-                        "/icons/**",
-
-                        "/",
-                        "/login",
-                        "/registration",
+                        Arrays.stream(MvcConfig.RESOURCES)
+                                .map(s -> "/" + s + "/**")
+                                .toArray(String[]::new)
+                ).permitAll()
+                .mvcMatchers(
+                        "/", "/{lang}",
+                        "/login", "/{lang}/login",
+                        "/registration", "/{lang}/registration",
                         "/registerUser",
                         "/registrationConfirm",
                         "/resendRegistrationToken",
@@ -74,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/parking", true)
+                .failureUrl("/login?error=true")
                 .and()
                 .httpBasic()//TODO remove
 
