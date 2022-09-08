@@ -27,12 +27,12 @@ public class MvcConfig implements WebMvcConfigurer {
             Locale.forLanguageTag("uk")
     );
 
-    public static final String[] RESOURCES = new String[]{
+    public static final List<String> RESOURCES = List.of(
             "css",
             "js",
             "img",
             "icons"
-    };
+    );
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

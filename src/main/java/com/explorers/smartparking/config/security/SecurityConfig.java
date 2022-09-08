@@ -1,6 +1,5 @@
 package com.explorers.smartparking.config.security;
 
-import com.explorers.smartparking.config.spring.MvcConfig;
 import com.explorers.smartparking.user.persistence.model.RoleName;
 import com.explorers.smartparking.user.web.failHandler.AuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+
+import static com.explorers.smartparking.config.spring.MvcConfig.RESOURCES;
 
 @Configuration
 @EnableWebSecurity
@@ -41,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers(
-                        Arrays.stream(MvcConfig.RESOURCES)
-                                .map(s -> "/" + s + "/**")
+                        RESOURCES.stream()
+                                .map(resource -> "/" + resource + "/**")
                                 .toArray(String[]::new)
                 ).permitAll()
                 .mvcMatchers(

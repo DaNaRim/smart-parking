@@ -11,7 +11,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -28,7 +27,7 @@ public class LocaleInterceptor implements HandlerInterceptor {
         String path = request.getRequestURI();
 
         boolean isResourceRequest = Stream.concat(
-                        Arrays.stream(RESOURCES),
+                        RESOURCES.stream(),
                         Stream.of("favicon.ico")
                 )
                 .map(resource -> "/" + resource)
