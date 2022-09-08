@@ -21,11 +21,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationFailureHandler authenticationFailureHandler;
     private final UserDetailsServiceImpl userDetailsService;
+    private final SecurityProperties securityProperties;
 
     public SecurityConfig(AuthenticationFailureHandler authenticationFailureHandler,
-                          UserDetailsServiceImpl userDetailsService) {
+                          UserDetailsServiceImpl userDetailsService,
+                          SecurityProperties securityProperties) {
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.userDetailsService = userDetailsService;
+        this.securityProperties = securityProperties;
     }
 
     @Override
@@ -90,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .rememberMe()
-                .key("r*bQin&BcqR&^1DKTUGo")
+                .key(securityProperties.rememberMeKey())
                 .rememberMeParameter("remember-me")
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                 .userDetailsService(userDetailsService)
