@@ -13,10 +13,6 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
     private final Log logger = LogFactory.getLog(PasswordMatchesValidator.class);
 
     @Override
-    public void initialize(PasswordMatches constraintAnnotation) {
-    }
-
-    @Override
     public boolean isValid(Object obj, ConstraintValidatorContext context) {
         try {
             PasswordEntity passwordEntity = (PasswordEntity) obj;
