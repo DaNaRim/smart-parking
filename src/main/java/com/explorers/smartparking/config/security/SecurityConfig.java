@@ -66,21 +66,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .csrf()
-                .disable()//TODO enable
+
 
 //                .and()
 //                .exceptionHandling()
 //                .accessDeniedPage("/forbidden")
 
-//                .and()
+                .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/parking", true)
                 .failureHandler(authenticationFailureHandler)
-                .and()
-                .httpBasic()//TODO remove
 
                 .and()
                 .logout()
@@ -98,14 +96,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .useSecureCookie(true);
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(userDetailsService);
-//        provider.setPasswordEncoder(encoder());
-//        return provider;
-//    }
 
     @Bean
     public PasswordEncoder encoder() {
