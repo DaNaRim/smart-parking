@@ -14,32 +14,36 @@
     <div class="log_wrap">
         <div class="msgs-container">
             <div class="alert alert-info" th:if="${param.message != null}" th:text="${param.message[0]}">message</div>
-            <div class="alert alert-danger"
-                 th:if="${param.error != null}"
-                 th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}"></div>
         </div>
         <div class="form_wrap fw_small">
             <img alt="parking_photo" src="../static/img/park_empty.jpg" th:src="@{/img/park_empty.jpg}">
             <div class="form">
                 <form method="POST" th:action="@{/login}">
                     <h1 th:text="#{login.h1}"></h1>
-                    <div class="simple_form">
-                        <input type="email"
-                               id="username"
-                               name="username"
-                               th:placeholder="#{login.form.placeholder.email}"
-                               required>
-                        <input type="password"
-                               id="password"
-                               name="password"
-                               th:placeholder="#{login.form.placeholder.password}"
-                               required>
+                    <fieldset>
+                        <div class="simple_form">
+                            <input type="email"
+                                   id="username"
+                                   name="username"
+                                   th:placeholder="#{login.form.placeholder.email}"
+                                   required>
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   th:placeholder="#{login.form.placeholder.password}"
+                                   required>
+                        </div>
+                    </fieldset>
+                    <div class="error" th:if="${param.error}" th:text="${session.AUTH_ERROR}"></div>
+
+                    <div class="buttons">
+                        <button type="submit" th:text="#{login.form.button.submit}"></button>
+                        <a class="link_button"
+                           href="forgotPassword.html"
+                           th:href="@{/forgotPassword}"
+                           th:text="#{login.form.button.forget}"></a>
                     </div>
-                    <button type="submit" th:text="#{login.form.button.submit}"></button>
                 </form>
-                <a class="second_form" href="forgotPassword.html" th:href="@{/forgotPassword}">
-                    <button th:text="#{login.form.button.forget}"></button>
-                </a>
             </div>
         </div>
     </div>

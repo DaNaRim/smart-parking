@@ -16,7 +16,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.explorers.smartparking.config.spring.MvcConfig.*;
+import static com.explorers.smartparking.config.spring.MvcConfig.RESOURCES;
+import static com.explorers.smartparking.config.spring.MvcConfig.SUPPORTED_LOCALES;
 
 public class LocaleInterceptor implements HandlerInterceptor {
 
@@ -33,19 +34,21 @@ public class LocaleInterceptor implements HandlerInterceptor {
                 .map(resource -> "/" + resource)
                 .anyMatch(path::startsWith);
 
-        if (isResourceRequest) return true;
-        if (!request.getMethod().equals(HttpMethod.GET.toString())) return true;
-        if (path.equals("/login")) return true; //FIXME: fix this
+        if (isResourceRequest
+                || !request.getMethod().equals(HttpMethod.GET.toString())
+                || path.equals("/login")) {
+            return true;
+        }
 
         if (path.length() < 3) {
-            redirect(response,"/" + LocaleContextHolder.getLocale().getLanguage());
+            redirect(response, "/" + LocaleContextHolder.getLocale().getLanguage());
             return false;
         } else {
             String lang = path.substring(1, 3);
             Locale locale = Locale.forLanguageTag(lang);
 
             if (!SUPPORTED_LOCALES.contains(locale)) {
-                redirect(response,"/%s%s".formatted(LocaleContextHolder.getLocale().getLanguage(), path));
+                redirect(response, "/%s%s".formatted(LocaleContextHolder.getLocale().getLanguage(), path));
                 return false;
             }
         }

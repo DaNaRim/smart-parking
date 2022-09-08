@@ -2,7 +2,7 @@ package com.explorers.smartparking.config.security;
 
 import com.explorers.smartparking.config.spring.MvcConfig;
 import com.explorers.smartparking.user.persistence.model.RoleName;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.explorers.smartparking.user.web.failHandler.AuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,10 +19,12 @@ import java.util.concurrent.TimeUnit;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final AuthenticationFailureHandler authenticationFailureHandler;
     private final UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(AuthenticationFailureHandler authenticationFailureHandler,
+                          UserDetailsServiceImpl userDetailsService) {
+        this.authenticationFailureHandler = authenticationFailureHandler;
         this.userDetailsService = userDetailsService;
     }
 
@@ -76,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/parking", true)
-                .failureUrl("/login?error=true")
+                .failureHandler(authenticationFailureHandler)
                 .and()
                 .httpBasic()//TODO remove
 
