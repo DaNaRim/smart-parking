@@ -31,11 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.securityProperties = securityProperties;
     }
 
+    //skipcq: JAVA-W1042
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 
+    //skipcq: JAVA-W1042
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
