@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../static/css/bootstrap-reboot.css" th:href="@{/css/bootstrap-reboot.css}">
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="../../static/css/error.css" th:href="@{/css/error.css}">
+    <title th:text="#{error-403.title}"></title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<section class="error bg2">
+    <div class="msg">
+        <div>
+            <h1 th:text="#{error-403.h1}"></h1>
+            <div class="icon">
+                <img src="../../static/icons/error_icon.png" alt="error" th:src="@{/icons/error_icon.png}"/>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

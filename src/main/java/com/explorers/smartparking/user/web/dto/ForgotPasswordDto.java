@@ -6,19 +6,24 @@ import com.explorers.smartparking.user.web.validator.ValidPassword;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@PasswordMatches
+/**
+ * Don't forget to update the message in src\main\resources\messages\
+ */
+@PasswordMatches(message = "{validation.user.matching.password}")
 public class ForgotPasswordDto extends PasswordEntity {
 
-    @NotBlank
-    @Size(min = 8, max = 30)
+    @NotBlank(message = "{validation.user.required.newPassword}")
     @ValidPassword
     private String newPassword;
 
-    @NotBlank
+    @NotBlank(message = "{validation.user.required.matchingPassword}")
     private String matchingPassword;
 
-    @NotBlank
-    private String token;
+    private final String token;
+
+    public ForgotPasswordDto(String token) {
+        this.token = token;
+    }
 
     @Override
     public String getPassword() {
@@ -44,9 +49,5 @@ public class ForgotPasswordDto extends PasswordEntity {
 
     public String getToken() {
         return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

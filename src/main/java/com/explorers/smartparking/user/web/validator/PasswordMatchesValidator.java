@@ -3,6 +3,7 @@ package com.explorers.smartparking.user.web.validator;
 import com.explorers.smartparking.user.web.dto.PasswordEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.thymeleaf.util.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -17,10 +18,9 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext context) {
-
         try {
             PasswordEntity passwordEntity = (PasswordEntity) obj;
-            return passwordEntity.getPassword().equals(passwordEntity.getMatchingPassword());
+            return StringUtils.equals(passwordEntity.getPassword(), passwordEntity.getMatchingPassword());
         } catch (ClassCastException e) {
             logger.error("obj is not a valid type");
             throw new RuntimeException("obj is not a valid type");

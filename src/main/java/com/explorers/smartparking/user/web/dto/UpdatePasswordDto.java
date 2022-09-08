@@ -4,20 +4,21 @@ import com.explorers.smartparking.user.web.validator.PasswordMatches;
 import com.explorers.smartparking.user.web.validator.ValidPassword;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
-@PasswordMatches
+/**
+ * Don't forget to update the message in src\main\resources\messages\
+ */
+@PasswordMatches(message = "{validation.user.matching.password}")
 public class UpdatePasswordDto extends PasswordEntity {
 
-    @NotBlank
+    @NotBlank(message = "{validation.user.required.oldPassword}")
     private String oldPassword;
 
     @ValidPassword
-    @NotBlank
-    @Size(min = 8, max = 30)
+    @NotBlank(message = "{validation.user.required.newPassword}")
     private String newPassword;
 
-    @NotBlank
+    @NotBlank(message = "{validation.user.required.matchingPassword}")
     private String matchingPassword;
 
     @Override
@@ -28,6 +29,10 @@ public class UpdatePasswordDto extends PasswordEntity {
     @Override
     public String getMatchingPassword() {
         return matchingPassword;
+    }
+
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
     }
 
     public String getOldPassword() {
@@ -44,9 +49,5 @@ public class UpdatePasswordDto extends PasswordEntity {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
-    }
-
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
     }
 }

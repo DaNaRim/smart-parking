@@ -1,79 +1,47 @@
 <!DOCTYPE html>
-<html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:lang="${#locale.getLanguage()}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/css/bootstrap-reboot.css" rel="stylesheet" th:href="@{/css/bootstrap-reboot.css}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-    <link href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" rel="stylesheet" type="text/css"/>
-    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
-    <link href="../static/css/index.css" rel="stylesheet" th:href="@{/css/index.css}">
-    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap-reboot.css" th:href="@{/css/bootstrap-reboot.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="../static/js/index.js" th:src="@{/js/index.js}"></script>
     <title>Smart parking</title>
 </head>
 <body>
-<header class="main_header bg1">
-    <div class="header_top">
-        <img alt="user" class="user_logo" src="../static/icons/user.svg" th:src="@{/icons/user.svg}">
-        user_name
-    </div>
-    <div class="header_bottom">
-        <div class="logo">
-            <img alt="logo" class="logo_icon" src="../static/icons/logoCircle.png" th:src="@{/icons/logoCircle.png}"/>
-            <h3>SMART PARKING</h3>
-        </div>
-        <div class="menu">
-            <nav class="header_nav">
-                <ul>
-                    <li>
-                        <a class="header_nav_link" href="index.html" th:href="@{/}">Головна</a>
-                    </li>
-                    <li>
-                        <a class="header_nav_link" href="login.html" th:href="@{/login}">Вхід</a>
-                    </li>
-                    <li>
-                        <a class="header_nav_link" href="registration.html" th:href="@{/registration}">Реєстрація</a>
-                    </li>
-                </ul>
-            </nav>
-            <!--TODO lang-->
-        </div>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <section class="history bg2">
     <div class="history_text">
-        <h1>Наша історія</h1>
-        <p>Наразі у багатьох великих містах складно знайти місця для парковки.</p>
-        <p>Через те, що далеко не кожен водій бажає витрачати свій час та зусилля на пошуки, автомобілі залишаються
-            посеред вулиць, спричиняючи аварійні ситуації у містах.</p>
-        <p>У зв`язку з цим, ми презентуємо наш проект <b>Smart Parking</b>, що спрямований на вирішення даної проблеми й
-            допоможе знайти й навіть забронювати місце.</p>
+        <h1 th:text="#{index.history.h1}"></h1>
+        <p th:text="#{index.history.p.first}"></p>
+        <p th:text="#{index.history.p.second}"></p>
+        <p>[[#{index.history.p.third.part1}]] <b>Smart Parking</b>[[#{index.history.p.third.part2}]]</p>
     </div>
-    <img alt="parking_photo" class="history_image" src="../static/img/park_earth_logo.png"
+    <img class="history_image" alt="parking_photo" src="../static/img/park_earth_logo.png"
          th:src="@{/img/park_earth_logo.png}">
 </section>
 
 <section class="bridge">
     <div class="bridge_mask">
         <div class="bridge_text">
-            <h1>
-                Smart<br>
-                parking
-            </h1>
-            <p>Зручно, сучасно, надійно</p>
+            <h2>Smart<br>parking</h2>
+            <p th:text="#{index.bridge.p}"></p>
         </div>
     </div>
 </section>
 
 <section class="about_app bg2">
-    <h1>Про програму</h1>
-    <p>Для початку потрібно зареєструватися та підтвердити пошту</p>
-    <p>Далі ви можете подивитися список парковок на яких є вільні місця і забронювати одне з них</p>
-    <p>Коли приїдете на місце, охоронець допоможе знайти ваше заброньоване місце та відмітить його як зайняте</p>
-    <p>При виїзді охоронець відмітить місце як вільне</p>
+    <h2 th:text="#{index.about.h2}"></h2>
+    <p th:text="#{index.about.p.first}"></p>
+    <p th:text="#{index.about.p.second}"></p>
+    <p th:text="#{index.about.p.third}"></p>
+    <p th:text="#{index.about.p.fourth}"></p>
 </section>
 
 <div class="none" id="playVideo">
@@ -85,7 +53,7 @@
         <div class="carousel_item">
             <div class="mask">
                 <div>
-                    <h1>Легке використання програми</h1>
+                    <h2 th:text="#{index.carousel.h2.first}"></h2>
                 </div>
             </div>
             <img alt="crsl_img" src="../static/img/crsl_1.jpg" th:src="@{/img/crsl_1.jpg}"/>
@@ -93,7 +61,7 @@
         <div class="carousel_item">
             <div class="mask">
                 <div>
-                    <h1>Швидкий пошук</h1>
+                    <h2 th:text="#{index.carousel.h2.second}"></h2>
                 </div>
             </div>
             <img alt="crsl_img" src="../static/img/crsl_2.jpg" th:src="@{/img/crsl_2.jpg}"/>
@@ -101,7 +69,7 @@
         <div class="carousel_item">
             <div class="mask">
                 <div>
-                    <h1>І не варто нервуватися :)</h1>
+                    <h2 th:text="#{index.carousel.h2.third}"></h2>
                 </div>
             </div>
             <img alt="crsl_img" src="../static/img/crsl_3.jpg" th:src="@{/img/crsl_3.jpg}"/>
@@ -109,10 +77,6 @@
     </div>
 </section>
 
-<footer class="main_footer bg1">
-    <div class="footer_text">
-        @explorers_team | Сайт створено з божою поміччю
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

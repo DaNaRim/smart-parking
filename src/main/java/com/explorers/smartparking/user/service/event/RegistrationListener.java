@@ -21,6 +21,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     }
 
     private void confirmRegistration(OnRegistrationCompleteEvent event) {
-        tokenEmailFacade.createAndSendVerificationToken(event.getUser(), event.getRequest());
+        tokenEmailFacade.createAndSendVerificationToken(event.getUser());
     }
 }

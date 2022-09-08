@@ -1,74 +1,56 @@
 <!DOCTYPE html>
-<html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:lang="${#locale.getLanguage()}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/css/bootstrap-reboot.css" rel="stylesheet" th:href="@{/css/bootstrap-reboot.css}">
-    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
-    <link href="../static/css/login.css" rel="stylesheet" th:href="@{/css/login.css}">
-    <title>Smart parking</title>
+    <link rel="stylesheet" href="../static/css/bootstrap-reboot.css" th:href="@{/css/bootstrap-reboot.css}">
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
+    <title th:text="#{login.title}"></title>
 </head>
 <body>
-<header class="main_header bg1">
-    <div class="header_top">
-        <img alt="user" class="user_logo" src="../static/icons/user.svg" th:src="@{/icons/user.svg}">
-        user_name
-    </div>
-    <div class="header_bottom">
-        <div class="logo">
-            <img alt="logo" class="logo_icon" src="../static/icons/logoCircle.png" th:src="@{/icons/logoCircle.png}"/>
-            <h3>SMART PARKING</h3>
-        </div>
-        <div class="menu">
-            <nav class="header_nav">
-                <ul>
-                    <li>
-                        <a class="header_nav_link" href="index.html" th:href="@{/}">Головна</a>
-                    </li>
-                    <li>
-                        <a class="header_nav_link" href="login.html" th:href="@{/login}">Вхід</a>
-                    </li>
-                    <li>
-                        <a class="header_nav_link" href="registration.html" th:href="@{/registration}">Реєстрація</a>
-                    </li>
-                </ul>
-            </nav>
-            <!--TODO lang-->
-        </div>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <section class="simple_form_section bg2">
     <div class="log_wrap">
         <div class="msgs-container">
             <div class="alert alert-info" th:if="${param.message != null}" th:text="${param.message[0]}">message</div>
-            <div class="alert alert-danger" th:if="${param.error != null}"
-                 th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">
-                error
-            </div>
         </div>
         <div class="form_wrap fw_small">
             <img alt="parking_photo" src="../static/img/park_empty.jpg" th:src="@{/img/park_empty.jpg}">
             <div class="form">
                 <form method="POST" th:action="@{/login}">
-                    <h1>Увійти в систему</h1>
-                    <div class="simple_form">
-                        <input id="username" name="username" placeholder="пошта" required type="email">
-                        <input id="password" name="password" placeholder="пароль" required type="password">
+                    <h1 th:text="#{login.h1}"></h1>
+                    <fieldset>
+                        <div class="simple_form">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                            <input type="email"
+                                   id="username"
+                                   name="username"
+                                   th:placeholder="#{login.form.placeholder.email}"
+                                   required>
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   th:placeholder="#{login.form.placeholder.password}"
+                                   required>
+                        </div>
+                    </fieldset>
+                    <div class="error" th:if="${param.error}" th:text="${session.AUTH_ERROR}"></div>
+
+                    <div class="buttons">
+                        <button type="submit" th:text="#{login.form.button.submit}"></button>
+                        <a class="link_button"
+                           href="forgotPassword.html"
+                           th:href="@{/forgotPassword}"
+                           th:text="#{login.form.button.forget}"></a>
                     </div>
-                    <button type="submit">Увійти</button>
                 </form>
-                <a class="second_form" href="forgetPassword.html" th:href="@{/forgetPassword}">
-                    <button type="submit">Забув пароль</button>
-                </a>
             </div>
         </div>
     </div>
 </section>
 
-<footer class="main_footer bg1">
-    <div class="footer_text">
-        @explorers_team | Сайт створено з божою поміччю
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

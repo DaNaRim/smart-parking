@@ -1,7 +1,8 @@
 package com.explorers.smartparking.config.security;
 
+import com.explorers.smartparking.config.spring.MvcConfig;
 import com.explorers.smartparking.user.persistence.model.RoleName;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.explorers.smartparking.user.web.failHandler.AuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,17 +12,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final AuthenticationFailureHandler authenticationFailureHandler;
     private final UserDetailsServiceImpl userDetailsService;
+    private final SecurityProperties securityProperties;
 
-    @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(AuthenticationFailureHandler authenticationFailureHandler,
+                          UserDetailsServiceImpl userDetailsService,
+                          SecurityProperties securityProperties) {
+        this.authenticationFailureHandler = authenticationFailureHandler;
         this.userDetailsService = userDetailsService;
+        this.securityProperties = securityProperties;
     }
 
     @Override
@@ -34,23 +41,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers(
-                        "/css/**",
-                        "/js/**",
-                        "/img/**",
-                        "/icons/**",
-
-                        "/",
-                        "/login",
-                        "/registration",
+                        Arrays.stream(MvcConfig.RESOURCES)
+                                .map(s -> "/" + s + "/**")
+                                .toArray(String[]::new)
+                ).permitAll()
+                .mvcMatchers(
+                        "/", "/{lang}",
+                        "/login", "/{lang}/login",
+                        "/registration", "/{lang}/registration",
                         "/registerUser",
                         "/registrationConfirm",
                         "/resendRegistrationToken",
-                        "/forgetPassword",
+                        "/forgotPassword",
                         "/sendPassResetToken",
                         "/resetPasswordPage",
-                        "/updateFogotPassword",
-                        "/updateForgottenPassword").permitAll()
-                .mvcMatchers("/user/**",
+                        "/updateForgotPassword",
+                        "/updateForgottenPassword",
+                        "/errors/badToken").permitAll()
+                .mvcMatchers(
+                        "/user/**",
                         "/parking",
                         "/park/**").hasRole(RoleName.USER.name())
                 .mvcMatchers("/guard/**").hasRole(RoleName.GUARD.name())
@@ -60,20 +69,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .csrf()
-                .disable()//TODO enable
+
 
 //                .and()
 //                .exceptionHandling()
 //                .accessDeniedPage("/forbidden")
 
-//                .and()
+                .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/parking", true)
-                .and()
-                .httpBasic()//TODO remove
+                .failureHandler(authenticationFailureHandler)
 
                 .and()
                 .logout()
@@ -85,20 +93,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .rememberMe()
-                .key("r*bQin&BcqR&^1DKTUGo")
+                .key(securityProperties.rememberMeKey())
                 .rememberMeParameter("remember-me")
                 .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                 .userDetailsService(userDetailsService)
                 .useSecureCookie(true);
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(userDetailsService);
-//        provider.setPasswordEncoder(encoder());
-//        return provider;
-//    }
 
     @Bean
     public PasswordEncoder encoder() {

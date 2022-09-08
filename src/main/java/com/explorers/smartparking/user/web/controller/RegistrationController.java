@@ -1,10 +1,9 @@
 package com.explorers.smartparking.user.web.controller;
 
 import com.explorers.smartparking.user.persistence.model.User;
+import com.explorers.smartparking.user.service.RegistrationService;
 import com.explorers.smartparking.user.service.TokenEmailFacade;
 import com.explorers.smartparking.user.service.TokenService;
-import com.explorers.smartparking.user.service.RegistrationService;
-import com.explorers.smartparking.user.service.event.OnRegistrationCompleteEvent;
 import com.explorers.smartparking.user.web.dto.ForgotPasswordDto;
 import com.explorers.smartparking.user.web.dto.RegistrationDto;
 import com.explorers.smartparking.user.web.util.GenericResponse;
@@ -14,13 +13,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Locale;
 
 @Controller
+@RequestMapping({"/", "/{lang}"})
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -42,19 +42,35 @@ public class RegistrationController {
         this.messages = messages;
     }
 
-    @PostMapping("/registerUser")
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
+    @GetMapping("/registration")
+    public String showRegistrationPage(Model model) {
+        model.addAttribute("registrationDto", new RegistrationDto());
+        return "registration";
+    }
+
+    @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    GenericResponse registerUserAccount(@RequestBody @Valid RegistrationDto registrationDto,
-                                        HttpServletRequest request) {
+    public String registerUserAccount(@ModelAttribute @Valid RegistrationDto registrationDto,
+                                      BindingResult result,
+                                      Locale locale,
+                                      Model model) {
+
+        if (result.hasErrors()) return "registration";
 
         User user = registrationService.registerNewUserAccount(registrationDto);
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request));
-        return new GenericResponse(messages.getMessage("message.user.accountRegistered", null, request.getLocale()));
+//        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
+
+        model.addAttribute("message", messages.getMessage("message.user.accountRegistered", null, locale));
+        return "registration";
     }
 
     @GetMapping("/registrationConfirm")
-    public String confirmRegistration(@RequestParam("token") String token,
+    public String confirmRegistration(@RequestParam("token") String token, //TODO: handle empty token
                                       Locale locale,
                                       Model model) {
 
@@ -65,11 +81,10 @@ public class RegistrationController {
 
     @GetMapping("/resendRegistrationToken")
     public String resendRegistrationToken(@RequestParam("email") String userEmail,
-                                          HttpServletRequest request,
                                           Locale locale,
                                           Model model) {
 
-        tokenEmailFacade.updateAndSendVerificationToken(userEmail, request);
+        tokenEmailFacade.updateAndSendVerificationToken(userEmail);
 
         model.addAttribute("message", messages.getMessage("message.user.tokenResent", null, locale));
         return "redirect:/login?lang=" + locale.getLanguage();
@@ -78,11 +93,10 @@ public class RegistrationController {
     @PostMapping("/sendPassResetToken")
     public @ResponseBody
     GenericResponse resetPassword(@RequestParam("email") String userEmail,
-                                  HttpServletRequest request) {
+                                  Locale locale) {
 
-        tokenEmailFacade.createAndSendPasswordResetToken(userEmail, request);
-        return new GenericResponse(
-                messages.getMessage("message.user.resetPassEmailSent", null, request.getLocale()));
+        tokenEmailFacade.createAndSendPasswordResetToken(userEmail);
+        return new GenericResponse(messages.getMessage("message.user.resetPassEmailSent", null, locale));
     }
 
     @GetMapping("/resetPasswordPage")
@@ -92,13 +106,30 @@ public class RegistrationController {
 
         tokenService.validatePasswordResetToken(token);
         model.addAttribute("token", token);
-        return "redirect:/updateFogotPassword?lang=" + locale.getLanguage();
+        return "redirect:/updateForgotPassword?lang=" + locale.getLanguage();
     }
 
-    @PutMapping("/updateForgottenPassword")
-    public String updateForgottenPassword(@RequestBody @Valid ForgotPasswordDto passwordDto,
+    @GetMapping("/updateForgotPassword")
+    public String showUpdateForgotPasswordPage(@RequestParam(name = "token", required = false) String token,
+                                               Model model) {
+        try {
+            tokenService.validatePasswordResetToken(token);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/errors/badToken";
+        }
+
+        model.addAttribute("forgotPasswordDto", new ForgotPasswordDto(token));
+        return "updateForgotPassword";
+    }
+
+    @RequestMapping(path = "/updateForgottenPassword", method = {RequestMethod.PUT, RequestMethod.POST})
+    public String updateForgottenPassword(@ModelAttribute @Valid ForgotPasswordDto passwordDto,
+                                          BindingResult result,
                                           Model model,
                                           Locale locale) {
+
+        if (result.hasErrors()) return "updateForgotPassword";
 
         registrationService.changeForgottenPassword(passwordDto);
         model.addAttribute("message", messages.getMessage("message.user.updatePasswordSuc", null, locale));

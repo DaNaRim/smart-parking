@@ -1,0 +1,43 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+    <header class="main_header bg1">
+        <div class="header_top">
+            <img class="user_logo" alt="user" src="../../static/icons/user.svg" th:src="@{/icons/user.svg}">
+            user_name
+        </div>
+        <div class="header_bottom">
+            <div class="logo">
+                <img class="logo_icon"
+                     alt="logo"
+                     src="../../static/icons/logoCircle.png"
+                     th:src="@{/icons/logoCircle.png}"/>
+                <h3>SMART PARKING</h3>
+            </div>
+            <div class="menu">
+                <nav class="header_nav">
+                    <ul>
+                        <li><a class="header_nav_link"
+                               th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__}"
+                               th:text="#{header.nav.main}"></a></li>
+                        <li><a class="header_nav_link"
+                               th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__/login}"
+                               th:text="#{header.nav.login}"></a></li>
+                        <li><a class="header_nav_link"
+                               th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__/registration}"
+                               th:text="#{header.nav.registration}"></a></li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a th:href="${#httpServletRequest.requestURI.replace(#locale.getLanguage(), 'en')}">en</a>
+                        </li>
+                        <li>
+                            <a th:href="${#httpServletRequest.requestURI.replace(#locale.getLanguage(), 'ru')}">ru</a>
+                        </li>
+                        <li>
+                            <a th:href="${#httpServletRequest.requestURI.replace(#locale.getLanguage(), 'uk')}">uk</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+</th:block>

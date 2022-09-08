@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/park")
+@RequestMapping({"/park", "/{lang}/park"})
 public class ParkingController {
 
     private final ParkingService parkingService;

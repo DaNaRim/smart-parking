@@ -2,11 +2,10 @@ package com.explorers.smartparking.user.web.failHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,16 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
-@Component("authenticationFailureHandler")
+@Component
 public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    private static final String SESSION_ATTR_AUTH_ERROR = "AUTH_ERROR";
+
     private final MessageSource messages;
-    private final LocaleResolver localeResolver;
 
     @Autowired
-    public AuthenticationFailureHandler(MessageSource messages, LocaleResolver localeResolver) {
+    public AuthenticationFailureHandler(MessageSource messages) {
         this.messages = messages;
-        this.localeResolver = localeResolver;
     }
 
     @Override
@@ -31,27 +30,23 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        setDefaultFailureUrl("/login?error=true");
+        Locale locale = LocaleContextHolder.getLocale();
 
+        setDefaultFailureUrl("/%s/login?error=true".formatted(locale.getLanguage()));
         super.onAuthenticationFailure(request, response, exception);
 
-        final Locale locale = localeResolver.resolveLocale(request);
+        String errorMessage = exception.getMessage();
 
-        String errorMessage = messages.getMessage("message.badCredentials", null, locale);
-
-        if (exception.getMessage().equalsIgnoreCase("User is disabled")) {
-            errorMessage = messages.getMessage("auth.message.disabled", null, locale);
-
-        } else if (exception.getMessage().equalsIgnoreCase("User account has expired")) {
-            errorMessage = messages.getMessage("auth.message.expired", null, locale);
-
-        } else if (exception.getMessage().equalsIgnoreCase("blocked")) {
-            errorMessage = messages.getMessage("auth.message.blocked", null, locale);
-
-        } else if (exception.getMessage().equalsIgnoreCase("unusual location")) {
-            errorMessage = messages.getMessage("auth.message.unusual.location", null, locale);
-        }
-
-        request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
+        String resultMessage = switch (errorMessage) {
+            case "Bad credentials" -> messages.getMessage("auth.badCredentials", null, locale);
+            case "User is disabled" -> messages.getMessage("auth.disabled", null, locale);
+            case "User account has expired" -> messages.getMessage("auth.expired", null, locale);
+            case "blocked" -> messages.getMessage("auth.blocked", null, locale);
+            default -> {
+                logger.warn("Unknown login error: " + errorMessage);
+                yield messages.getMessage("auth.unexpected", null, locale);
+            }
+        };
+        request.getSession().setAttribute(SESSION_ATTR_AUTH_ERROR, resultMessage);
     }
 }
