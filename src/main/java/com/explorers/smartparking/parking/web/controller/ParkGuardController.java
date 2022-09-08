@@ -25,8 +25,8 @@ public class ParkGuardController {
     }
 
     @PutMapping("/occupyPlace")
-    public GenericResponse occupyPlace(@RequestParam Long parkingId,
-                                       @RequestParam Long placeNumber,
+    public GenericResponse occupyPlace(@RequestParam long parkingId,
+                                       @RequestParam long placeNumber,
                                        @RequestParam String userEmail,
                                        HttpServletRequest request) {
 
@@ -35,8 +35,8 @@ public class ParkGuardController {
     }
 
     @PutMapping("/makeRoom")
-    public GenericResponse makeRoom(@RequestParam Long parkingId,
-                                    @RequestParam Long placeNumber,
+    public GenericResponse makeRoom(@RequestParam long parkingId,
+                                    @RequestParam long placeNumber,
                                     HttpServletRequest request) {
 
         parkingService.makeRoom(parkingId, placeNumber);

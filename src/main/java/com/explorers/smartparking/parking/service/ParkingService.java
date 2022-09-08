@@ -8,19 +8,19 @@ import java.util.List;
 
 public interface ParkingService {
 
-    List<FreeParkResponse> getNearestFreeParkingSpaces(Long x, Long y);
+    List<FreeParkResponse> getNearestFreeParkingSpaces(long x, long y);
 
     /**
      * @return current user balance
      */
-    double occupyPlace(Long parkingId, Long placeNumber, String userEmail);
+    double occupyPlace(long parkingId, long placeNumber, String userEmail);
 
     /**
      * @return current user balance
      */
-    double makeRoom(Long parkingId, Long placeNumber);
+    double makeRoom(long parkingId, long placeNumber);
 
-    void bookPlace(Long parkingId, Long placeNumber, String userEmail);
+    void bookPlace(long parkingId, long placeNumber, String userEmail);
 
     Parking addParking(ParkingDto parkingDto);
 }

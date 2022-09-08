@@ -34,7 +34,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public List<FreeParkResponse> getNearestFreeParkingSpaces(Long x, Long y) {
+    public List<FreeParkResponse> getNearestFreeParkingSpaces(long x, long y) {
         List<Parking> parkingList = parkingDao.getFreeParkingPlaces(x, y);
 
         List<FreeParkResponse> result = new ArrayList<>();
@@ -59,7 +59,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public double occupyPlace(Long parkingId, Long placeNumber, String userEmail) {
+    public double occupyPlace(long parkingId, long placeNumber, String userEmail) {
         ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
         User user = userService.findByEmail(userEmail);
 
@@ -85,7 +85,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public double makeRoom(Long parkingId, Long placeNumber) {
+    public double makeRoom(long parkingId, long placeNumber) {
         ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
 
         if (!pp.isBusy()) {
@@ -104,7 +104,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public void bookPlace(Long parkingId, Long placeNumber, String userEmail) { //TODO check for book one place
+    public void bookPlace(long parkingId, long placeNumber, String userEmail) { //TODO check for book one place
         ParkingPlace pp = getParkingPlace(parkingId, placeNumber);
         User user = userService.findByEmail(userEmail);
 

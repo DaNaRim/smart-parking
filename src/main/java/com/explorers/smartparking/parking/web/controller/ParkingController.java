@@ -25,15 +25,15 @@ public class ParkingController {
     }
 
     @GetMapping("/getFreeParkingPlaces")
-    public List<FreeParkResponse> getFreeParkingPlaces(@RequestParam Long x,
-                                                       @RequestParam Long y) {
+    public List<FreeParkResponse> getFreeParkingPlaces(@RequestParam long x,
+                                                       @RequestParam long y) {
 
         return parkingService.getNearestFreeParkingSpaces(x, y);
     }
 
     @PutMapping("/bookPlace")
-    public GenericResponse bookPlace(@RequestParam Long parkingId,
-                                     @RequestParam Long placeNumber,
+    public GenericResponse bookPlace(@RequestParam long parkingId,
+                                     @RequestParam long placeNumber,
                                      HttpServletRequest request) {
 
         parkingService.bookPlace(parkingId, placeNumber, AuthorizationUtil.getUserEmail());
