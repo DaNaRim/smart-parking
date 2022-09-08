@@ -26,18 +26,16 @@ public class LocaleInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String path = request.getRequestURI();
 
-        String resourceRequested = Stream.concat(
+        boolean isResourceRequest = Stream.concat(
                         Arrays.stream(RESOURCES),
                         Stream.of("favicon.ico")
                 )
                 .map(resource -> "/" + resource)
-                .filter(path::startsWith)
-                .findFirst()
-                .orElse(null);
+                .anyMatch(path::startsWith);
 
-        if (resourceRequested != null) return true;
+        if (isResourceRequest) return true;
         if (!request.getMethod().equals(HttpMethod.GET.toString())) return true;
-        if (path.equals("/login") || path.equals("/error")) return true; //FIXME: fix this
+        if (path.equals("/login")) return true; //FIXME: fix this
 
         if (path.length() < 3) {
             redirect(response,"/" + LocaleContextHolder.getLocale().getLanguage());
