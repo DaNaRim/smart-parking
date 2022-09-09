@@ -1,4 +1,4 @@
-package com.explorers.smartparking.config.security;
+package com.explorers.smartparking.config.security.auth;
 
 import com.explorers.smartparking.user.persistence.dao.UserDao;
 import com.explorers.smartparking.user.persistence.model.User;
@@ -6,17 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
-@Service
-@Transactional
-public class UserDetailsServiceImpl implements UserDetailsService {
+@Component
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserDao userDao;
 
     @Autowired
-    public UserDetailsServiceImpl(UserDao userDao) {
+    public CustomUserDetailsService(UserDao userDao) {
         this.userDao = userDao;
     }
 

@@ -35,7 +35,6 @@ public class LocaleInterceptor implements HandlerInterceptor {
 
         if (isResourceRequest
                 || !request.getMethod().equals(HttpMethod.GET.toString())
-                || path.equals("/login")
                 || path.equals("/logout")) {
             return true;
         }
