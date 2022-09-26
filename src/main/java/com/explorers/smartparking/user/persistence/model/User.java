@@ -59,6 +59,10 @@ public class User implements UserDetails {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getUsername() {
         return getEmail();
@@ -84,9 +88,16 @@ public class User implements UserDetails {
         return enabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -105,20 +116,12 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public Set<Role> getRoles() {

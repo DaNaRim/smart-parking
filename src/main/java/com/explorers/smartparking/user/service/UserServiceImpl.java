@@ -50,14 +50,14 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(passwordDto.getOldPassword(), userDao.getPasswordById(userId))) {
             throw new InvalidOldPasswordException("Invalid old password");
         }
-        User user = userDao.getById(userId);
+        User user = userDao.getReferenceById(userId);
         user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
     }
 
     @Override
     public double putMoney(long userId, int money) {
 
-        if (money < 0) {
+        if (money <= 0) {
             throw new InvalidBalanceException("can`t add negative money");
         }
 

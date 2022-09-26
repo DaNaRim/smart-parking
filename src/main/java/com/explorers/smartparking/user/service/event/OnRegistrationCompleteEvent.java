@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
 
-    private User user;
+    private final User user;
 
     public OnRegistrationCompleteEvent(User user) {
         super(user);
@@ -16,7 +16,4 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

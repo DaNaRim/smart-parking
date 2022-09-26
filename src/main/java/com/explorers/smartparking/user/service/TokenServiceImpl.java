@@ -39,6 +39,16 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
+    public Token updateVerificationToken(String userEmail) {
+        User user = userDao.findByEmail(userEmail);
+
+        if (user.isEnabled()) {
+            throw new InvalidTokenException("userAlreadyEnable");
+        }
+        return createVerificationToken(user);
+    }
+
+    @Override
     public Token validateVerificationToken(String token) {
         Token verificationToken = tokenDao.findByToken(token);
 

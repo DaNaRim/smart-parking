@@ -7,6 +7,8 @@ public interface TokenService {
 
     Token createVerificationToken(User user);
 
+    Token updateVerificationToken(String userEmail);
+
     Token validateVerificationToken(String token);
 
     Token getVerificationToken(String verificationToken);

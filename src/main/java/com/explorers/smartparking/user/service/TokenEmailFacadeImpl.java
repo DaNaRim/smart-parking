@@ -1,6 +1,5 @@
 package com.explorers.smartparking.user.service;
 
-import com.explorers.smartparking.user.error.InvalidTokenException;
 import com.explorers.smartparking.user.persistence.model.Token;
 import com.explorers.smartparking.user.persistence.model.User;
 import com.explorers.smartparking.user.web.util.MailUtil;
@@ -43,12 +42,7 @@ public class TokenEmailFacadeImpl implements TokenEmailFacade {
 
     @Override
     public void updateAndSendVerificationToken(String userEmail) {
-        User user = userService.findByEmail(userEmail);
-
-        if (user.isEnabled()) {
-            throw new InvalidTokenException("userAlreadyEnable");
-        }
-        Token token = tokenService.createVerificationToken(user);
+        Token token = tokenService.updateVerificationToken(userEmail);
 
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
 
