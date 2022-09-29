@@ -5,16 +5,18 @@ import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.validation.ConstraintValidatorContext;
+import java.text.DateFormat;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -34,6 +36,17 @@ class ValidPasswordValidatorTest {
 
     @BeforeEach
     void setUp() {
+//        mockStatic(LogFactory.class);
+//        logger = mock(Log.class);
+//        when(LogFactory.getLog(anyString())).thenReturn(logger);
+//        when(LogFactory.getLog(any(Class.class))).thenReturn(logger);
+    }
+
+    /**
+     * RepeatedTest param value is SUPPORTED_LOCALES size
+     */
+    @RepeatedTest(3)
+    void isValid() {
         Locale.setDefault(locales.next());
 
         //https://stackoverflow.com/a/42105139/14986564
@@ -44,13 +57,7 @@ class ValidPasswordValidatorTest {
 
         when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(builder);
         when(builder.addConstraintViolation()).thenReturn(context);
-    }
 
-    /**
-     * RepeatedTest param value is SUPPORTED_LOCALES size
-     */
-    @RepeatedTest(3)
-    void isValid() {
         assertTrue(validator.isValid("12345678", context));
         assertTrue(validator.isValid("ASDEFGHI", context));
         assertTrue(validator.isValid("12345678ASDEFGHI", context));
@@ -66,5 +73,18 @@ class ValidPasswordValidatorTest {
 
         assertFalse(validator.isValid("  ", context));
         verify(context, times(4)).buildConstraintViolationWithTemplate(anyString());
+    }
+
+    @Test
+    void isValidIOException() {
+        Locale.setDefault(Stream.of(DateFormat.getAvailableLocales())
+                .filter(locale -> !MvcConfig.SUPPORTED_LOCALES.contains(locale))
+                .findFirst()
+                .orElseThrow());
+
+        assertThrows(RuntimeException.class, () -> validator.isValid("12345678", context));
+
+        //TODO verify logger
+//        verify(logger, times(1)).error(anyString());
     }
 }
