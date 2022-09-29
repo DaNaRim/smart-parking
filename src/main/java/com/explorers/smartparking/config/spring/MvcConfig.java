@@ -1,5 +1,7 @@
 package com.explorers.smartparking.config.spring;
 
+import com.explorers.smartparking.config.security.SecurityProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,6 +19,7 @@ import java.util.Locale;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.explorers.smartparking"})
+@EnableConfigurationProperties(SecurityProperties.class)
 public class MvcConfig implements WebMvcConfigurer {
 
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
