@@ -53,7 +53,7 @@ public class ValidPasswordValidator implements ConstraintValidator<ValidPassword
         try (FileInputStream fis = new FileInputStream(path)) {
             Properties props = new Properties();
 
-            props.load(new InputStreamReader(fis, StandardCharsets.UTF_8));
+            props.load(new InputStreamReader(fis, StandardCharsets.UTF_8)); //TODO: template without files
             return new PropertiesMessageResolver(props);
 
         } catch (IOException e) {

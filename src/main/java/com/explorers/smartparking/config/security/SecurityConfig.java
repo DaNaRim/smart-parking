@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { //skipcq: JAVA-W1042
         http
-                .authorizeHttpRequests((authz) -> authz
+                .authorizeRequests((authz) -> authz
                         .mvcMatchers(
                                 RESOURCES.stream()
                                         .map(resource -> "/" + resource + "/**")

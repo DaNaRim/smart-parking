@@ -3,13 +3,33 @@ package com.explorers.smartparking.user.web.validator;
 import com.explorers.smartparking.user.web.dto.ForgotPasswordDto;
 import com.explorers.smartparking.user.web.dto.RegistrationDto;
 import com.explorers.smartparking.user.web.dto.UpdatePasswordDto;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class PasswordMatchesValidatorTest {
 
+    private static final MockedStatic<LogFactory> loggerFactoryMock = mockStatic(LogFactory.class);
+    private static final Log logger = mock(Log.class);
+
     private final PasswordMatchesValidator validator = new PasswordMatchesValidator();
+
+    @BeforeAll
+    public static void beforeClass() {
+        loggerFactoryMock.when(() -> LogFactory.getLog(any(Class.class))).thenReturn(logger);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        loggerFactoryMock.close();
+    }
 
     @Test
     void isValidWithValidRegistrationDto() {
@@ -59,5 +79,6 @@ class PasswordMatchesValidatorTest {
     @Test
     void isValidWithInvalidClass() {
         assertThrows(RuntimeException.class, () -> validator.isValid(new Object(), null));
+        verify(logger).error(anyString(), any(ClassCastException.class));
     }
 }

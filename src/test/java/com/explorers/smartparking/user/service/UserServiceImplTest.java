@@ -73,7 +73,7 @@ class UserServiceImplTest {
         user.setId(1L);
         user.setPassword("oldPassword");
 
-        when(userDao.getReferenceById(1L)).thenReturn(user);
+        when(userDao.getById(1L)).thenReturn(user);
         when(passwordEncoder.matches(passwordDto.getOldPassword(), userDao.getPasswordById(1L))).thenReturn(true);
         when(passwordEncoder.encode(passwordDto.getNewPassword())).thenReturn("newPassword");
 
@@ -92,7 +92,7 @@ class UserServiceImplTest {
         user.setId(1L);
         user.setPassword("oldPassword");
 
-        when(userDao.getReferenceById(1L)).thenReturn(user);
+        when(userDao.getById(1L)).thenReturn(user);
         when(passwordEncoder.matches(passwordDto.getOldPassword(), userDao.getPasswordById(1L))).thenReturn(false);
 
         assertThrows(InvalidOldPasswordException.class, () -> userService.changeUserPassword(1L, passwordDto));

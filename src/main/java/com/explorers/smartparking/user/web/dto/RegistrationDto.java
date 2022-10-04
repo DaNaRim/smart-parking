@@ -3,11 +3,9 @@ package com.explorers.smartparking.user.web.dto;
 import com.explorers.smartparking.user.web.validator.PasswordMatches;
 import com.explorers.smartparking.user.web.validator.ValidEmail;
 import com.explorers.smartparking.user.web.validator.ValidPassword;
-import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Locale;
 
 /**
  * Don't forget to update the message in src\main\resources\messages\

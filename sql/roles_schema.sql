@@ -9,7 +9,8 @@ INSERT INTO Role (role_name)
 VALUES ('USER'),
        ('ADMIN'),
        ('SUPER_ADMIN'),
-       ('GUARD');
+       ('GUARD')
+ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS User_role
 (

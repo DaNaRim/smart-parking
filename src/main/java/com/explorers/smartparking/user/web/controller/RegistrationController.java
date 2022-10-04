@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Locale;
@@ -43,7 +45,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String showLoginPage() {
         return "login";
     }
 
@@ -55,39 +57,45 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public String registerUserAccount(@ModelAttribute @Valid RegistrationDto registrationDto,
-                                      BindingResult result,
-                                      Locale locale,
-                                      Model model) {
+    public ModelAndView registerUserAccount(@ModelAttribute @Valid RegistrationDto registrationDto,
+                                            BindingResult result,
+                                            Locale locale,
+                                            ModelAndView mav) {
 
-        if (result.hasErrors()) return "registration";
+        mav.setViewName("registration");
+
+        if (result.hasErrors()) {
+            mav.setStatus(HttpStatus.BAD_REQUEST);
+            return mav;
+        }
 
         User user = registrationService.registerNewUserAccount(registrationDto);
 //        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
 
-        model.addAttribute("message", messages.getMessage("message.user.accountRegistered", null, locale));
-        return "registration";
+        mav.getModel().put("message", messages.getMessage("message.user.accountRegistered", null, locale));
+        return mav;
     }
 
     @GetMapping("/registrationConfirm")
     public String confirmRegistration(@RequestParam("token") String token, //TODO: handle empty token
                                       Locale locale,
-                                      Model model) {
+                                      RedirectAttributes attributes) {
 
         registrationService.enableUser(token);
-        model.addAttribute("message", messages.getMessage("message.user.accountVerified", null, locale));
-        return "redirect:/login?lang=" + locale.getLanguage();
+
+        attributes.addFlashAttribute("message", messages.getMessage("message.user.accountVerified", null, locale));
+        return "redirect:/login";
     }
 
     @GetMapping("/resendRegistrationToken")
     public String resendRegistrationToken(@RequestParam("email") String userEmail,
                                           Locale locale,
-                                          Model model) {
+                                          RedirectAttributes attributes) {
 
         tokenEmailFacade.updateAndSendVerificationToken(userEmail);
 
-        model.addAttribute("message", messages.getMessage("message.user.tokenResent", null, locale));
-        return "redirect:/login?lang=" + locale.getLanguage();
+        attributes.addFlashAttribute("message", messages.getMessage("message.user.tokenResent", null, locale));
+        return "redirect:/login";
     }
 
     @PostMapping("/sendPassResetToken")

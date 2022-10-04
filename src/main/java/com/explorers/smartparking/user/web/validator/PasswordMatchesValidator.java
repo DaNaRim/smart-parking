@@ -18,8 +18,8 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
             PasswordEntity passwordEntity = (PasswordEntity) obj;
             return StringUtils.equals(passwordEntity.getPassword(), passwordEntity.getMatchingPassword());
         } catch (ClassCastException e) {
-            logger.error("obj is not a valid type");
-            throw new RuntimeException("obj is not a valid type");
+            logger.error("obj is not a valid type", e);
+            throw new RuntimeException("obj is not a valid type", e);
         }
     }
 }

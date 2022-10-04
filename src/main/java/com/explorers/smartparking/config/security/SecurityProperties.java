@@ -3,16 +3,21 @@ package com.explorers.smartparking.config.security;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("secrets")
-public record SecurityProperties(
+public final class SecurityProperties {
 
-        String databaseUrl,
-        String databaseUsername,
-        String databasePassword,
+    private String databaseUrl;
+    private String databaseUsername;
+    private String databasePassword;
 
-        String mailUsername,
-        String mailPassword,
+    private String mailUsername;
+    private String mailPassword;
 
-        String rememberMeKey
-) {
+    private String rememberMeKey;
 
+    public SecurityProperties() {
+    }
+
+    public String rememberMeKey() {
+        return rememberMeKey;
+    }
 }

@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(passwordDto.getOldPassword(), userDao.getPasswordById(userId))) {
             throw new InvalidOldPasswordException("Invalid old password");
         }
-        User user = userDao.getReferenceById(userId);
+        User user = userDao.getById(userId);
         user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
     }
 

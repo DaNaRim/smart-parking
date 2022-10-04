@@ -2,12 +2,15 @@ package com.explorers.smartparking.user.web.validator;
 
 import com.explorers.smartparking.config.spring.MvcConfig;
 import com.google.common.collect.Iterables;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.validation.ConstraintValidatorContext;
@@ -23,23 +26,21 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ValidPasswordValidatorTest {
 
-    private static Iterator<Locale> locales;
+    private static final MockedStatic<LogFactory> loggerFactoryMock = mockStatic(LogFactory.class);
+    private static final Iterator<Locale> locales = Iterables.cycle(MvcConfig.SUPPORTED_LOCALES).iterator();
+    private static final Log logger = mock(Log.class);
     private final ValidPasswordValidator validator = new ValidPasswordValidator();
-
     @Mock
     private ConstraintValidatorContext context;
 
     @BeforeAll
-    static void beforeAll() {
-        locales = Iterables.cycle(MvcConfig.SUPPORTED_LOCALES).iterator();
+    public static void beforeClass() {
+        loggerFactoryMock.when(() -> LogFactory.getLog(any(Class.class))).thenReturn(logger);
     }
 
-    @BeforeEach
-    void setUp() {
-//        mockStatic(LogFactory.class);
-//        logger = mock(Log.class);
-//        when(LogFactory.getLog(anyString())).thenReturn(logger);
-//        when(LogFactory.getLog(any(Class.class))).thenReturn(logger);
+    @AfterAll
+    static void afterAll() {
+        loggerFactoryMock.close();
     }
 
     /**
@@ -50,8 +51,6 @@ class ValidPasswordValidatorTest {
         Locale.setDefault(locales.next());
 
         //https://stackoverflow.com/a/42105139/14986564
-        context = mock(ConstraintValidatorContext.class);
-
         ConstraintValidatorContext.ConstraintViolationBuilder builder
                 = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
 
@@ -84,7 +83,6 @@ class ValidPasswordValidatorTest {
 
         assertThrows(RuntimeException.class, () -> validator.isValid("12345678", context));
 
-        //TODO verify logger
-//        verify(logger, times(1)).error(anyString());
+        verify(logger, times(1)).error(anyString(), any(Exception.class));
     }
 }

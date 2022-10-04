@@ -22,7 +22,7 @@
                     <h1 th:text="#{login.h1}"></h1>
                     <fieldset>
                         <div class="simple_form">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                             <input type="email"
                                    id="username"

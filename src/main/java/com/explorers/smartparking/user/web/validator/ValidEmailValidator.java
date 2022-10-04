@@ -12,6 +12,8 @@ public class ValidEmailValidator implements ConstraintValidator<ValidEmail, Stri
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
+        if (email == null) return false; //TODO use pattern annotation in dto
+
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
