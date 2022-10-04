@@ -11,14 +11,11 @@
 <header th:replace="~{fragments/header :: header}"></header>
 
 <section class="park_main bg2">
-    <div class="msg">
-        <div>
-            <h1>На цьому все! Далі перейдемо до postman</h1>
-            <div class="icons">
-                <img src="../static/icons/chrome_icon.png" alt="chrome" th:src="@{/icons/chrome_icon.png}"/>
-                <img class="icon_turn" src="../static/icons/arrow_icon.png" alt="arrow" th:src="@{/icons/arrow_icon.png}"/>
-                <img src="../static/icons/postman_icon.png" alt="postman" th:src="@{/icons/postman_icon.png}"/>
-            </div>
+    <div class="coordinates" th:text="|Your coordinates: ${coordinates}|"></div>
+    <div class="parkings">
+        <div class="parking shadowbox" th:each="parking: ${parkingPlaces}">
+            <div th:text="|x = ${parking.getX()}, y = ${parking.getY()} (${parking.getDistance()})|"></div>
+            <div th:text="|Price per hour: ${parking.getPricePerHour()}|"></div>
         </div>
     </div>
 </section>

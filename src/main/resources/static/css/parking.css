@@ -2,28 +2,31 @@
     padding: 200px 0;
 }
 
-.msg {
+.coordinates {
+    margin: 0 auto 20px;
+    width: 450px;
     display: flex;
     justify-content: center;
-    color: #fff;
+    color: white;
 }
 
-.icons {
-    margin-top: 40px;
+.parkings {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    color: white;
 }
 
-.icons img {
-    height: 100px;
-    width: 100px;
-    margin-left: 30px;
+.parking {
+    margin: 0 20px 30px;
+    display: flex;
+    flex-direction: column;
 }
 
-.icons img:first-child {
-    margin-left: 0;
-}
-
-.icon_turn {
-    transform: rotate(-90deg);
+.shadowbox {
+    width: 40em;
+    border: 1px solid #333;
+    box-shadow: 8px 8px 5px #444;
+    padding: 8px 12px;
+    background-image: -moz-linear-gradient(180deg, #fff, #ddd 40%, #ccc);
 }

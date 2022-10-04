@@ -74,7 +74,7 @@ public class SecurityConfig {
                         .loginPage("/login").permitAll()
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/parking", true)
+                        .defaultSuccessUrl("/park/parking", true)
                         .failureHandler(authenticationFailureHandler)
                 )
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
