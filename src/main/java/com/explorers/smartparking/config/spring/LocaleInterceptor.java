@@ -11,14 +11,24 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import static com.explorers.smartparking.config.spring.MvcConfig.RESOURCES;
 import static com.explorers.smartparking.config.spring.MvcConfig.SUPPORTED_LOCALES;
 
 public class LocaleInterceptor implements HandlerInterceptor {
+
+    private static final ArrayList<String> EXCLUSIONS = new ArrayList<>();
+
+    static {
+        EXCLUSIONS.addAll(RESOURCES.stream().map(resource -> "/" + resource).toList());
+        EXCLUSIONS.add("/favicon.ico");
+        EXCLUSIONS.add("/swagger-ui");
+        EXCLUSIONS.add("/swagger-resources");
+        EXCLUSIONS.add("/v2/api-docs");
+    }
 
     private final Log logger = LogFactory.getLog(LocaleInterceptor.class);
 
@@ -26,16 +36,8 @@ public class LocaleInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String path = request.getRequestURI();
 
-        boolean isResourceRequest = Stream.concat(
-                        RESOURCES.stream(),
-                        Stream.of("favicon.ico")
-                )
-                .map(resource -> "/" + resource)
-                .anyMatch(path::startsWith);
-
-        if (isResourceRequest
-                || !request.getMethod().equals(HttpMethod.GET.toString())
-                || path.equals("/logout")) {
+        if (EXCLUSIONS.stream().anyMatch(path::startsWith)
+                || !request.getMethod().equals(HttpMethod.GET.toString())) {
             return true;
         }
 

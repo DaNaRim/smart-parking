@@ -48,11 +48,14 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
-        registry.addViewController("/{lang}").setViewName("index");
         registry.addViewController("/forgotPassword").setViewName("forgotPassword");
-        registry.addViewController("/{lang}/forgotPassword").setViewName("forgotPassword");
         registry.addViewController("/errors/badToken").setViewName("errors/badToken");
         registry.addViewController("/forbidden").setViewName("forbidden");
+
+        for (Locale locale : SUPPORTED_LOCALES) {
+            registry.addViewController("/" + locale.getLanguage()).setViewName("index");
+            registry.addViewController("/" + locale.getLanguage() + "/forgotPassword").setViewName("forgotPassword");
+        }
     }
 
     @Override
