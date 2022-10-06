@@ -1,4 +1,4 @@
-<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" th:fragment="header">
     <header class="main_header bg1">
         <div class="header_top">
             <img class="user_logo" alt="user" src="../../static/icons/user.svg" th:src="@{/icons/user.svg}">
@@ -24,6 +24,10 @@
                         <li><a class="header_nav_link"
                                th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__/registration}"
                                th:text="#{header.nav.registration}"></a></li>
+                        <li><a class="header_nav_link"
+                               sec:authorize="isAuthenticated()"
+                               th:href="@{/__${#httpServletRequest.requestURI.split('/')[1]}__/park/parking}"
+                               th:text="#{header.nav.parking}"></a></li>
                     </ul>
                     <ul>
                         <li>
