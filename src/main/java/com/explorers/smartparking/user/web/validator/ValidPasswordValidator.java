@@ -18,12 +18,12 @@ import java.util.Properties;
 @Component
 public class ValidPasswordValidator implements ConstraintValidator<ValidPassword, String> {
 
-    private static final String PASSAY_MESSAGE_FILE_PATH = "src/main/resources/validation_%s.properties";
+    private static final String PASSAY_MESSAGE_FILE_PATH = "src/main/resources/i18n/validation_%s.properties";
 
     private static final Log logger = LogFactory.getLog(ValidPasswordValidator.class);
 
     /**
-     * Don`t forget to update the message in src\main\resources\messages\
+     * Don't forget to update the message in src\main\resources\i18n\
      */
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {

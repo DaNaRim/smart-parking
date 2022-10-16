@@ -4,10 +4,9 @@ import com.explorers.smartparking.user.web.validator.PasswordMatches;
 import com.explorers.smartparking.user.web.validator.ValidPassword;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
- * Don't forget to update the message in src\main\resources\messages\
+ * Don't forget to update the message in src\main\resources\i18n\
  */
 @PasswordMatches(message = "{validation.user.matching.password}")
 public class ForgotPasswordDto extends PasswordEntity {

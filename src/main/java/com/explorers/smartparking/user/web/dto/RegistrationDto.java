@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
- * Don't forget to update the message in src\main\resources\messages\
+ * Don't forget to update the message in src\main\resources\i18n\
  */
 @PasswordMatches(message = "{validation.user.matching.password}")
 public class RegistrationDto extends PasswordEntity {

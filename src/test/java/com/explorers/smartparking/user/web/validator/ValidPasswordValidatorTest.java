@@ -83,6 +83,7 @@ class ValidPasswordValidatorTest {
 
         assertThrows(RuntimeException.class, () -> validator.isValid("12345678", context));
 
+        //FIXME: fails when run all tests but works when run user package tests
         verify(logger, times(1)).error(anyString(), any(Exception.class));
     }
 }
