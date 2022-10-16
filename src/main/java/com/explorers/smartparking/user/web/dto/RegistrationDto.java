@@ -1,10 +1,10 @@
 package com.explorers.smartparking.user.web.dto;
 
 import com.explorers.smartparking.user.web.validator.PasswordMatches;
-import com.explorers.smartparking.user.web.validator.ValidEmail;
 import com.explorers.smartparking.user.web.validator.ValidPassword;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -28,8 +28,9 @@ public class RegistrationDto extends PasswordEntity {
     @NotBlank(message = "{validation.user.required.confirmPassword}")
     private String matchingPassword;
 
-    @ValidEmail(message = "{validation.user.valid.email}")
     @NotBlank(message = "{validation.user.required.email}")
+    @Pattern(regexp = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$",
+            message = "{validation.user.valid.email}")
     private String email;
 
     @Override

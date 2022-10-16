@@ -151,7 +151,7 @@ class RegistrationControllerTest {
 
                             assertTrue(errors.get("firstName").contains("Size"));
                             assertTrue(errors.get("lastName").contains("Size"));
-                            assertTrue(errors.get("email").contains("ValidEmail"));
+                            assertTrue(errors.get("email").contains("Pattern"));
                             assertTrue(errors.get("password").contains("ValidPassword"));
                             assertTrue(errors.get("registrationDto").contains("PasswordMatches"));
                         }
