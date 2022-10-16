@@ -39,6 +39,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { //skipcq: JAVA-W1042
+        if (securityProperties.getRememberMeKey() == null) {
+            throw new IllegalStateException("Remember me key is not set");
+        }
+
         http
                 .authorizeRequests((authz) -> authz
                         .mvcMatchers(
@@ -85,7 +89,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID", "remember-me")
                 )
                 .rememberMe(httpSecurityRememberMeConfigurer -> httpSecurityRememberMeConfigurer
-                        .key(securityProperties.rememberMeKey())
+                        .key(securityProperties.getRememberMeKey())
                         .rememberMeParameter("remember-me")
                         .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                         .userDetailsService(userDetailsService)
