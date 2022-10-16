@@ -12,7 +12,10 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, updatable = false)
+    @Column(unique = true,
+            nullable = false,
+            updatable = false,
+            columnDefinition = "VARCHAR(20) CHECK (role_name IN ('USER', 'ADMIN', 'SUPER_ADMIN', 'GUARD'))")
     @Enumerated(EnumType.STRING)
     private RoleName roleName;
 
