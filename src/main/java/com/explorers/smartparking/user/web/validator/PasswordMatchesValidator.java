@@ -3,11 +3,13 @@ package com.explorers.smartparking.user.web.validator;
 import com.explorers.smartparking.user.web.dto.PasswordEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@Component
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
 
     private final Log logger = LogFactory.getLog(PasswordMatchesValidator.class);

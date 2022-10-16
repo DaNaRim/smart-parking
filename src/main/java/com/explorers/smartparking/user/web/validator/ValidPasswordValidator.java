@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.passay.*;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Properties;
 
+@Component
 public class ValidPasswordValidator implements ConstraintValidator<ValidPassword, String> {
 
     private static final String PASSAY_MESSAGE_FILE_PATH = "src/main/resources/validation_%s.properties";
