@@ -20,7 +20,7 @@ import java.net.URI;
 public class LoggerConfig extends ConfigurationFactory {
 
     private static final String LOGS_FOLDER = "./logs/";
-    private static final Level ROOT_LEVEL = Level.INFO;
+    private static final Level ROOT_LEVEL = Level.ALL;
 
     private static final String CONSOLE_APPENDER = "CONSOLE";
     private static final String CONSOLE_PATTERN
@@ -42,6 +42,7 @@ public class LoggerConfig extends ConfigurationFactory {
     private static final String FILE_NAME = "log.log";
     private static final String FILE_PATTERN
             = "%d %highlight{%-5p} [%15.15thread] %style{%40.40logger{1}}{blue} : %m %n%throwable{5}";
+    private static final Level FILE_LEVEL = Level.INFO;
 
     private static Configuration createConfiguration(final String name,
                                                      final ConfigurationBuilder<BuiltConfiguration> builder) {
@@ -55,7 +56,7 @@ public class LoggerConfig extends ConfigurationFactory {
 
         RootLoggerComponentBuilder rootLogger = builder.newRootLogger(ROOT_LEVEL)
                 .add(builder.newAppenderRef(CONSOLE_APPENDER).addAttribute("level", CONSOLE_LEVEL))
-                .add(builder.newAppenderRef(FILE_APPENDER))
+                .add(builder.newAppenderRef(FILE_APPENDER).addAttribute("level", FILE_LEVEL))
                 .add(builder.newAppenderRef(ROLLING_FILE_APPENDER).addAttribute("level", ROLLING_FILE_LEVEL));
 
         builder.add(rootLogger);
