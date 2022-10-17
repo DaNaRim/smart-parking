@@ -42,6 +42,12 @@ public class MvcConfig implements WebMvcConfigurer {
             "icons"
     );
 
+    private static final List<String> MESSAGES = List.of(
+            "messages",
+            "validation",
+            "pages"
+    );
+
     private static final List<String> SQL_INIT_SCRIPTS = List.of(
             "data-roles.sql"
     );
@@ -89,11 +95,12 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames(
-                "classpath:/messages",
-                "classpath:/validation",
-                "classpath:/pages"
-        );
+
+        String[] baseNames = MESSAGES.stream()
+                .map(name -> "classpath:/i18n/" + name)
+                .toArray(String[]::new);
+
+        messageSource.setBasenames(baseNames);
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
