@@ -4,6 +4,7 @@ import com.explorers.smartparking.user.persistence.model.User;
 import com.explorers.smartparking.user.service.RegistrationService;
 import com.explorers.smartparking.user.service.TokenEmailFacade;
 import com.explorers.smartparking.user.service.TokenService;
+import com.explorers.smartparking.user.service.event.OnRegistrationCompleteEvent;
 import com.explorers.smartparking.user.web.dto.ForgotPasswordDto;
 import com.explorers.smartparking.user.web.dto.RegistrationDto;
 import com.explorers.smartparking.user.web.util.GenericResponse;
@@ -70,7 +71,7 @@ public class RegistrationController {
         }
 
         User user = registrationService.registerNewUserAccount(registrationDto);
-//        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user));
 
         mav.getModel().put("message", messages.getMessage("message.user.accountRegistered", null, locale));
         return mav;

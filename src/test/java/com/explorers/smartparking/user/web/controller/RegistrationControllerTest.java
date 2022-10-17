@@ -94,7 +94,7 @@ class RegistrationControllerTest {
                 .andExpect(model().attributeExists("message"));
 
         verify(registrationService).registerNewUserAccount(registrationDto);
-//        verify(listener).onApplicationEvent(any(OnRegistrationCompleteEvent.class));
+        verify(listener).onApplicationEvent(any(OnRegistrationCompleteEvent.class));
     }
 
     @Test
