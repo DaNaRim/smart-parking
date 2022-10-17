@@ -42,7 +42,7 @@ public class SecurityConfig {
         if (securityProperties.getRememberMeKey() == null) {
             throw new IllegalStateException("Remember me key is not set");
         }
-
+        //FIXME: Will not secure any request
         http
                 .authorizeRequests((authz) -> authz
                         .mvcMatchers(

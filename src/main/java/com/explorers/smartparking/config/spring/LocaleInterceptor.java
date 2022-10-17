@@ -28,6 +28,7 @@ public class LocaleInterceptor implements HandlerInterceptor {
         EXCLUSIONS.add("/swagger-ui");
         EXCLUSIONS.add("/swagger-resources");
         EXCLUSIONS.add("/v2/api-docs");
+        EXCLUSIONS.add("/error");
     }
 
     private final Log logger = LogFactory.getLog(LocaleInterceptor.class);
