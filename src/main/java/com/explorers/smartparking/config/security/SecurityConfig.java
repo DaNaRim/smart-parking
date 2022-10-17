@@ -40,9 +40,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { //skipcq: JAVA-W1042
         if (securityProperties.getRememberMeKey() == null) {
-            throw new IllegalStateException("Remember me key is not set");
+            throw new IllegalStateException("Remember-me key is not set");
         }
-        //FIXME: Will not secure any request
+
         http
                 .authorizeRequests((authz) -> authz
                         .mvcMatchers(
