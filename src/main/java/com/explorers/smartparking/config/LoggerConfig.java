@@ -29,16 +29,17 @@ public class LoggerConfig extends ConfigurationFactory {
     private static final String LOGS_FOLDER = "./logs/";
 
     private static final String CONSOLE_APPENDER = "CONSOLE";
-    private static final String CONSOLE_PATTERN
+    private static final String CONSOLE_LOG_PATTERN
             = "%d %highlight{%-5p} [%15.15thread] %style{%40.40logger{1}}{blue} : %m %throwable{short}%n";
     private static final Level CONSOLE_LEVEL = Level.INFO;
 
     private static final String ROLLING_FILE_APPENDER = "ROLLING_FILE";
     private static final String ROLLING_FILE_NAME = "rolling.log";
-    private static final String ROLLING_FILE_FOLDER = LOGS_FOLDER + "rolling-%d{yyyy-MM-dd}/";
+    private static final String ROLLING_FILE_FOLDER = LOGS_FOLDER + "rolling/";
+    private static final String ROLLING_FILE_FOLDER_PATTERN = ROLLING_FILE_FOLDER + "%d{yyyy-MM-dd}/";
     private static final String ROLLING_FILE_NAME_PATTERN = "rolling-%d{yyyy-MM-dd}-%i.log.gz";
     private static final String ROLLING_FILE_INTERVAL = "1";
-    private static final String ROLLING_FILE_PATTERN
+    private static final String ROLLING_FILE_LOG_PATTERN
             = "%d %highlight{%-5p} [%20.20thread] %style{%40.40logger{3.}}{blue} : %m %n%throwable";
     private static final String ROLLING_FILE_MAX_SIZE = "100MB";
     private static final String ROLLING_FILE_MAX_COUNT = "10";
@@ -46,14 +47,14 @@ public class LoggerConfig extends ConfigurationFactory {
 
     private static final String FILE_APPENDER = "FILE";
     private static final String FILE_NAME = "smart-parking.log";
-    private static final String FILE_PATTERN
+    private static final String FILE_LOG_PATTERN
             = "%d %highlight{%-5p} [%15.15thread] %style{%40.40logger{1}}{blue} : %m %n%throwable{5}";
     private static final Level FILE_LEVEL = Level.INFO;
 
     private static final String SMTP_APPENDER = "SMTP";
     private static final String SMTP_SUBJECT = "Smart Parking Error";
     private static final String SMTP_TO = "rangar.danarim@gmail.com";
-    private static final String SMTP_PATTERN = "%d%n %m%n %throwable";
+    private static final String SMTP_LOG_PATTERN = "%d%n %m%n %throwable";
     private static final Level SMTP_LEVEL = Level.ERROR;
 
     private static Configuration createConfiguration(final String name,
@@ -93,17 +94,17 @@ public class LoggerConfig extends ConfigurationFactory {
         return builder.newAppender(CONSOLE_APPENDER, "Console")
                 .addAttribute("target", SYSTEM_OUT)
                 .add(builder.newLayout("PatternLayout")
-                        .addAttribute("pattern", CONSOLE_PATTERN)
+                        .addAttribute("pattern", CONSOLE_LOG_PATTERN)
                         .addAttribute("disableAnsi", "false")
                 );
     }
 
     private static AppenderComponentBuilder getRollingFileAppender(ConfigurationBuilder<BuiltConfiguration> builder) {
         return builder.newAppender(ROLLING_FILE_APPENDER, "RollingFile")
-                .addAttribute("fileName", LOGS_FOLDER + ROLLING_FILE_NAME)
-                .addAttribute("filePattern", ROLLING_FILE_FOLDER + ROLLING_FILE_NAME_PATTERN)
+                .addAttribute("fileName", ROLLING_FILE_FOLDER + ROLLING_FILE_NAME)
+                .addAttribute("filePattern", ROLLING_FILE_FOLDER_PATTERN + ROLLING_FILE_NAME_PATTERN)
                 .add(builder.newLayout("PatternLayout")
-                        .addAttribute("pattern", ROLLING_FILE_PATTERN)
+                        .addAttribute("pattern", ROLLING_FILE_LOG_PATTERN)
                         .addAttribute("disableAnsi", "false")
                 )
                 .addComponent(builder.newComponent("Policies")
@@ -123,7 +124,7 @@ public class LoggerConfig extends ConfigurationFactory {
         return builder.newAppender(FILE_APPENDER, "File")
                 .addAttribute("fileName", LOGS_FOLDER + FILE_NAME)
                 .add(builder.newLayout("PatternLayout")
-                        .addAttribute("pattern", FILE_PATTERN)
+                        .addAttribute("pattern", FILE_LOG_PATTERN)
                         .addAttribute("disableAnsi", "false")
                 );
     }
@@ -143,7 +144,7 @@ public class LoggerConfig extends ConfigurationFactory {
                 .addAttribute("smtpPassword", password)
                 .addAttribute("smtpProtocol", "smtp")
                 .add(builder.newLayout("PatternLayout")
-                        .addAttribute("pattern", SMTP_PATTERN)
+                        .addAttribute("pattern", SMTP_LOG_PATTERN)
                 );
     }
 
